@@ -83,7 +83,7 @@ module Admin
       #
       # See: http://www.rubydoc.info/gems/rack/Rack/Session/Cookie
       #
-      sessions :redis, secret: ENV['ADMIN_SESSIONS_SECRET']
+      sessions :redis, { secret: ENV['ADMIN_SESSIONS_SECRET'], redis_server: ENV['REDIS_URL'] }
 
       # Configure Rack middleware for this application
       #
