@@ -1,0 +1,30 @@
+<div class="m-6">
+  <table style="border-collapse: separate; border-spacing: 20px;">
+    <% homeworks.each do |hw| %>
+      <tr>
+        <% if hw.url.nil? %>
+          <td><%= hw.set %></td>
+          <td></td>
+          <td></td>
+          <td>
+            <%= form_for :set, routes.choose_set_path do
+              hidden_field :name, value: hw.set
+              submit 'Open', class: 'btn btn-primary my-3'
+            end %>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        <% else %>
+          <td><%= hw.type %></td>
+          <td><%= hw.name %></td>
+          <td><span class="Label Label--large <%= hw.colour ? ('Label--' + hw.colour) : '' %>"><%= hw.status %></span></td>
+          <td><a class="btn btn-primary my-3" role="button" href="<%= hw.url %>"><%= hw.url_title %></a></td>
+          <td><span class="Label Label--green"><%= hw.worth %></span></td>
+          <td><%= hw.prepare_before %></td>
+          <td><%= hw.approve_before %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>

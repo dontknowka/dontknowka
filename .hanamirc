@@ -1,0 +1,3 @@
+project=dontknowka
+test=rspec
+template=erb

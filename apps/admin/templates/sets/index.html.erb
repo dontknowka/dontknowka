@@ -1,0 +1,46 @@
+<div class="p-6">
+  <% sets.each do |set| %>
+    <div class="TableObject p-4">
+      <div class="TableObject-item">
+        <span class="text-bold">HW</span>
+        <span><%= i_rmapping[set.homework_instance_id] %></span>
+      </div>
+      <div class="TableObject-item">
+        <span class="text-bold">Name</span>
+        <span><%= set.name %></span>
+      </div>
+      <%= form_for :set, routes.set_path(set.id), values: { set: set }, method: :patch do
+        div class: 'TableObject-item p-2' do
+          label :variant_id, class: 'form-label'
+          number_field :variant_id, class: 'form-control'
+        end
+        div class: 'TableObject-item form-actions' do
+          submit 'Edit', class: 'btn btn-primary'
+        end
+      end %>
+      <div class="TableObject-item">
+        <%= form_for :set, routes.set_path(set.id), method: :delete do
+          div class: 'form-actions' do
+            submit 'Delete', class: 'btn btn-danger'
+          end
+        end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="TableObject p-4">
+    <%= form_for :set, routes.sets_path, method: :post do
+      div class: 'TableObject-item p-2' do
+        select :homework_instance_id, i_mapping, class: 'form-select'
+      end
+      div class: 'TableObject-item p-2' do
+        text_field :name, {class: 'form-control', placeholder: 'Name'}
+      end
+      div class: 'TableObject-item p-2' do
+        number_field :variant_id, {class: 'form-control', placeholder: 'Variant'}
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'New', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
+</div>

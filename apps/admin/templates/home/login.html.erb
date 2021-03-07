@@ -1,0 +1,8 @@
+<div class="Box">
+  <div class="blankslate">
+    <%= form_for :login, routes.auth_path do
+      password_field :password, class: 'form-control'
+      submit 'Login', class: 'btn btn-primary'
+    end %>
+  </div>
+</div>

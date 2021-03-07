@@ -1,0 +1,37 @@
+<div class="blankslate">
+  <div class="p-3">
+    <a class="btn" role="button" href="<%= routes.fix_ass_path %>">Fix assignments</a>
+  </div>
+  <div class="p-3">
+    <%=
+      form_for :ta_mapping, routes.add_team_to_repos_path do
+        div do
+          select :homework, team_mapping.homeworks, options: { promt: 'Select a homework' }, class: 'form-control'
+          select :team, team_mapping.team_ids, options: { promt: 'Select a TA team' }, class: 'form-control'
+          submit :Assign, class: 'btn'
+        end
+      end
+    %>
+  </div>
+  <div class="p-3">
+    <%=
+      form_for :review_mapping, routes.add_team_to_reviewers_path do
+        div do
+          select :homework, team_mapping.homeworks, options: { promt: 'Select a homework' }, class: 'form-control'
+          select :team, team_mapping.team_slugs, options: { promt: 'Select a TA team' }, class: 'form-control'
+          submit :Review, class: 'btn'
+        end
+      end
+    %>
+  </div>
+  <div class="p-3">
+    <%=
+      form_for :ta_mapping, routes.create_teacher_path do
+        div do
+          select :team, team_mapping.team_ids, options: { promt: 'Select a TA team' }, class: 'form-control'
+          submit :Create, class: 'btn'
+        end
+      end
+    %>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+    <title>Admin</title>
+    <%= favicon %>
+  </head>
+  <body>
+    <div class="Header">
+      <div class="Header-item">
+        <a class="Header-link" href="<%= routes.homeworks_path %>">Homeworks</a>
+      </div>
+      <div class="Header-item">
+        <a class="Header-link" href="<%= routes.instances_path %>">Instances</a>
+      </div>
+      <div class="Header-item">
+        <a class="Header-link" href="<%= routes.sets_path %>">Sets</a>
+      </div>
+      <div class="Header-item">
+        <a class="Header-link" href="<%= routes.ta_mappings_path %>">TA mapping</a>
+      </div>
+    </div>
+    <%= yield %>
+  </body>
+</html>

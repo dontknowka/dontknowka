@@ -1,0 +1,54 @@
+<div class="p-6">
+  <% instances.each do |i| %>
+    <div class="TableObject p-4">
+      <div class="TableObject-item">
+        <span class="text-bold">HW</span>
+        <span><%= hw_rmapping[i.homework_id] %></span>
+      </div>
+      <div class="TableObject-item">
+        <span class="text-bold">Name</span>
+        <span><%= i.name %></span>
+      </div>
+      <%= form_for :instance, routes.instance_path(i.id), values: { instance: i }, method: :patch do
+        div class: 'TableObject-item p-2' do
+          label :worth, class: 'form-label'
+          number_field :worth, class: 'form-control'
+        end
+        div class: 'TableObject-item p-2' do
+          label :classroom_url, class: 'form-label'
+          text_field :classroom_url, class: 'form-control'
+        end
+        div class: 'TableObject-item form-actions' do
+          submit 'Edit', class: 'btn btn-primary'
+        end
+      end %>
+      <div class="TableObject-item">
+        <%= form_for :instance, routes.instance_path(i.id), method: :delete do
+          div class: 'form-actions' do
+            submit 'Delete', class: 'btn btn-danger'
+          end
+        end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="TableObject p-4">
+    <%= form_for :instance, routes.instances_path, method: :post do
+      div class: 'TableObject-item p-2' do
+        Hanami.logger.debug hw_mapping.to_s
+        select :homework_id, hw_mapping, options: {promt: 'Homework'}, class: 'form-select'
+      end
+      div class: 'TableObject-item p-2' do
+        text_field :name, {class: 'form-control', placeholder: 'Name'}
+      end
+      div class: 'TableObject-item p-2' do
+        number_field :worth, {class: 'form-control', placeholder: 'Worth'}
+      end
+      div class: 'TableObject-item p-2' do
+        text_field :classroom_url, {class: 'form-control', placeholder: 'Classroom URL'}
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'New', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
+</div>

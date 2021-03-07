@@ -1,0 +1,49 @@
+<div class="p-6">
+  <% homeworks.each do |hw| %>
+    <div class="TableObject p-4">
+      <div class="TableObject-item">
+        <span class="text-bold">Name</span>
+        <span><%= hw.kind %><%= hw.number %></span>
+      </div>
+      <%= form_for :homework, routes.homework_path(hw.id), values: { homework: hw }, method: :patch do
+        div class: 'TableObject-item p-2' do
+          label :prepare_deadline, class: 'form-label'
+          datetime_field :prepare_deadline, class: 'ml-2 form-control'
+        end
+        div class: 'TableObject-item p-2' do
+          label :approve_deadline, class: 'form-label'
+          datetime_field :approve_deadline, class: 'ml-2 form-control'
+        end
+        div class: 'TableObject-item form-actions' do
+          submit 'Edit', class: 'btn btn-primary'
+        end
+      end %>
+      <div class="TableObject-item">
+        <%= form_for :homework, routes.homework_path(hw.id), method: :delete do
+          div class: 'form-actions' do
+            submit 'Delete', class: 'btn btn-danger'
+          end
+        end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="TableObject p-4">
+    <%= form_for :homework, routes.homeworks_path, method: :post do
+      div class: 'TableObject-item p-2' do
+        text_field :kind, {class: 'form-control', placeholder: 'Kind'}
+      end
+      div class: 'TableObject-item p-2' do
+        number_field :number, {class: 'form-control', placeholder: 'Number'}
+      end
+      div class: 'TableObject-item p-2' do
+        datetime_field :prepare_deadline, {class: 'form-control', placeholder: 'Prepare deadline'}
+      end
+      div class: 'TableObject-item p-2' do
+        datetime_field :approve_deadline, {class: 'form-control', placeholder: 'Approve deadline'}
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'New', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
+</div>
