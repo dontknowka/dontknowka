@@ -36,7 +36,6 @@ class AssignmentRepository < Hanami::Repository
 
   def with_sets(student)
     assignments.read("SELECT homeworks.kind AS homework_kind, homeworks.number AS homework_number, homework_instances.name AS homework_instance_name, homework_instances.classroom_url, homework_instances.worth, homework_sets.name AS homework_set_name, assignments.id, assignments.status, assignments.url, assignments.prepare_deadline, assignments.approve_deadline FROM homeworks INNER JOIN homework_instances ON (homeworks.id = homework_instances.homework_id) INNER JOIN homework_sets ON (homework_instances.id = homework_sets.homework_instance_id) INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND assignments.student_id = #{student.id})")
-    #assignments.read("SELECT homework_sets.name AS homework_set_name, homework_instances.name AS homework_instance_name, homework_instances.worth, homework_instances.classroom_url, assignments.student_id, assignments.status FROM homework_instances INNER JOIN homework_sets ON (homework_instances.id = homework_sets.homework_instance_id) INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id) WHERE assignments.student_id = #{student.id}")
       .map
       .to_a
   end
