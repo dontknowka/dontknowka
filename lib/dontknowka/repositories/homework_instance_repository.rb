@@ -10,11 +10,4 @@ class HomeworkInstanceRepository < Hanami::Repository
       .map_to(HomeworkInstance)
       .one
   end
-
-  def all_values
-    homework_instances
-      .read("SELECT * FROM homework_instances")
-      .map
-      .to_a
-  end
 end
