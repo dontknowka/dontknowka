@@ -1,0 +1,45 @@
+<div class="p-6">
+  <% bonuses.each do |b| %>
+    <div class="TableObject p-4">
+      <div class="TableObject-item m-2">
+        <span class="<%= b.student_name %>"</span>
+      </div>
+      <%= form_for :bonus, routes.bonus_path(b.id), values: { bonus: b }, method: :patch do
+        div class: 'TableObject-item m-2' do
+          label :worth, class: 'form-label'
+          number_field :worth, class: 'ml-2 form-control'
+        end
+        div class: 'TableObject-item m-2' do
+          label :why, class: 'form-label'
+          text_field :why, class: 'ml-2 form-control'
+        end
+        div class: 'TableObject-item form-actions' do
+          submit 'Edit', class: 'btn btn-primary'
+        end
+      end %>
+      <div class="TableObject-item">
+        <%= form_for :bonus, routes.bonus_path(b.id), method: :delete do
+          div class: 'form-actions' do
+            submit 'Delete', class: 'btn btn-danger'
+          end
+        end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="TableObject p-4">
+    <%= form_fit :bonus, routes.bonuses_path, method: :post do
+      div class: 'TableObject-item p-2' do
+        select :student_id, students, options: { promt: 'Select a student' }, class: 'form-control'
+      end
+      div class: 'TableObject-item p-2' do
+        number_field :worth, {class: 'form-control', placeholder: 'Worth'}
+      end
+      div class: 'TableObject-item p-2' do
+        text_field :why, {class: 'form-control', placeholder: 'Why?'}
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'New', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
+</div>

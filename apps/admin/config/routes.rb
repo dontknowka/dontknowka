@@ -13,3 +13,10 @@ resources :homeworks, except: [:show]
 resources :instances, except: [:show]
 resources :sets, except: [:show]
 resources :ta_mappings, except: [:show]
+resources :teachers, only: [:index, :create, :destroy]
+resources :teams, only: [:index, :create, :destroy]
+resources :teacher_mappings, only: [:index, :create, :destroy]
+resources :team_mappings, only: [:index, :create, :destroy]
+resources :bonuses, only: [:index, :create, :update, :destroy]
+get '/teachers/populate', to: 'teachers#populate', as: :populate_teachers
+get '/teams/populate', to: 'teams#populate', as: :populate_teams

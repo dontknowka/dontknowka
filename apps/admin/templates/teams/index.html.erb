@@ -1,0 +1,22 @@
+<div class="p-6">
+  <div class="p-4">
+    <a class="btn" role="button" href="<%= routes.populate_teams_path %>">Populate teams</a>
+  </div>
+  <% teams.each do |t| %>
+    <div class="TableObject p-4">
+      <div class="TableObject-item m-3">
+        <span><%= t.slug %></span>
+      </div>
+      <div class="TableObject-item m-3">
+        <span><%= t.name %></span>
+      </div>
+      <div class="TableObject-item">
+        <%= form_for :team, routes.team_path(t.id), method: :delete do
+          div class: 'form-actions' do
+            submit 'Delete', class: 'btn btn-danger'
+          end
+        end %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,31 @@
+<div class="p-6">
+  <div class="p-4">
+    <a class="btn" role="button" href="<%= routes.populate_teachers_path %>">Populate teachers</a>
+  </div>
+  <% teachers.each do |t| %>
+    <div class="TableObject p-4">
+      <div class="TableObject-item m-3">
+        <span><%= t.login %></span>
+      </div>
+      <div class="TableObject-item m-3">
+        <span><%= t.first_name %></span>
+      </div>
+      <div class="TableObject-item m-3">
+        <span><%= t.last_name %></span>
+      </div>
+      <div class="TableObject-item m-3">
+        <span><%= t.email %></span>
+      </div>
+      <div class="TableObject-item m-3">
+        <span><%= t.teacher_teams.map({|m| m.name}).join(', ') %></span>
+      </div>
+      <div class="TableObject-item">
+        <%= form_for :teacher, routes.teacher_path(t.id), method: :delete do
+          div class: 'form-actions' do
+            submit 'Delete', class: 'btn btn-danger'
+          end
+        end %>
+      </div>
+    </div>
+  <% end %>
+</div>
