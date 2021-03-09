@@ -4,12 +4,12 @@ module Admin
       class Create
         include Admin::Action
 
-        def initialize(tms: TeacherMappingRepository.new)
-          @tms = tms
+        def initialize(team_mapping_repo: TeamMappingRepository.new)
+          @team_mapping_repo = team_mapping_repo
         end
 
         def call(params)
-          @tms.create(params[:tm])
+          @team_mapping_repo.create(params[:tm])
           redirect_to routes.ta_mappings_path
         end
       end

@@ -4,12 +4,12 @@ module Admin
       class Update
         include Admin::Action
 
-        def initialize(sets: TeacherMappingRepository.new)
-          @tms = tms
+        def initialize(sets: TeamMappingRepository.new)
+          @team_mapping_repo = team_mapping_repo
         end
 
         def call(params)
-          @tms.update(params[:id], params[:tm])
+          @team_mapping_repo.update(params[:id], params[:tm])
           redirect_to routes.ta_mappings_path
         end
       end

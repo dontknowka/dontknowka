@@ -1,16 +1,16 @@
 <div class="p-6">
-  <% tms.each do |tm| %>
+  <% mappings.each do |m| %>
     <div class="TableObject p-4">
       <div class="TableObject-item">
         <span class="text-bold">HW</span>
-        <span><%= i_rmapping[tm.homework_instance_id] %></span>
+        <span><%= instance_name[m.homework_instance_id] %></span>
       </div>
       <div class="TableObject-item">
         <span class="text-bold">TA</span>
-        <span><%= tm.teacher.first_name %></span>
+        <span><%= m.teacher_team.name %></span>
       </div>
       <div class="TableObject-item">
-        <%= form_for :tm, routes.ta_mapping_path(tm.id), method: :delete do
+        <%= form_for :tm, routes.ta_mapping_path(m.id), method: :delete do
           div class: 'form-actions' do
             submit 'Delete', class: 'btn btn-danger'
           end
@@ -21,10 +21,10 @@
   <div class="TableObject p-4">
     <%= form_for :tm, routes.ta_mappings_path, method: :post do
       div class: 'TableObject-item p-2' do
-        select :homework_instance_id, i_mapping, class: 'form-select'
+        select :homework_instance_id, instances, class: 'form-select'
       end
       div class: 'TableObject-item p-2' do
-        select :teacher_id, teacher_mapping, class: 'form-select'
+        select :teacher_team_id, teams, class: 'form-select'
       end
       div class: 'TableObject-item form-actions' do
         submit 'New', class: 'btn btn-primary'

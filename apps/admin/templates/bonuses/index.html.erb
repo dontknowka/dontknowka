@@ -27,7 +27,7 @@
     </div>
   <% end %>
   <div class="TableObject p-4">
-    <%= form_fit :bonus, routes.bonuses_path, method: :post do
+    <%= form_for :bonus, routes.bonuses_path, method: :post do
       div class: 'TableObject-item p-2' do
         select :student_id, students, options: { promt: 'Select a student' }, class: 'form-control'
       end

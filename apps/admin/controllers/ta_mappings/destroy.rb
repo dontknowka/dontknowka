@@ -4,12 +4,12 @@ module Admin
       class Destroy
         include Admin::Action
 
-        def initialize(tms: TeacherMappingRepository.new)
-          @tms = tms
+        def initialize(tms: TeamMappingRepository.new)
+          @team_mapping_repo = team_mapping_repo
         end
 
         def call(params)
-          @tms.delete(params[:id])
+          @team_mapping_repo.delete(params[:id])
           redirect_to routes.ta_mappings_path
         end
       end

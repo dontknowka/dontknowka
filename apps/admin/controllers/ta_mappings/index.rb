@@ -4,26 +4,25 @@ module Admin
       class Index
         include Admin::Action
 
-        expose :tms
-        expose :i_mapping
-        expose :i_rmapping
-        expose :teacher_mapping
+        expose :mappings
+        expose :instances
+        expose :instance_name
+        expose :teams
 
-        def initialize(tms: TeacherMappingRepository.new,
-                       teachers: TeacherRepository.new,
-                       instances: HomeworkInstanceRepository.new)
-          @tm_repo = tms
-          @teacher_repo = teachers
-          @instance_repo = instances
+        def initialize(team_mapping_repo: TeamMappingRepository.new,
+                       team_repo: TeacherTeamRepository.new,
+                       instance_repo: HomeworkInstanceRepository.new)
+          @team_mapping_repo = team_mapping_repo
+          @team_repo = team_repo
+          @instance_repo = instance_repo
         end
 
         def call(params)
-          @tms = @tm_repo.with_teachers
+          @mappins = @team_mapping_repo.with_teams
           instances = @instance_repo.all
-          @i_mapping = instances.map {|i| [i.name, i.id]}.to_h
-          @i_rmapping = instances.map {|i| [i.id, i.name]}.to_h
-          teachers = @teacher_repo.all
-          @teacher_mapping = teachers.map {|t| [t.login, t.id]}.to_h
+          @instances = instances.reduce(Hash[]) {|h, i| h.merge({i.name => i.id})}
+          @instance_name = instances.reduce(Hash[]) {|h, i| h.merge({i.id => i.name})}
+          @teams = @team_repo.all.reduce(Hash[]) {|h, t| h.merge({t.name => t.id})}
         end
       end
     end
