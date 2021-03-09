@@ -6,7 +6,7 @@ module Admin
 
         expose :teams
 
-        def initialize(team_repo: TeamRepository.new)
+        def initialize(team_repo: TeacherTeamRepository.new)
           @team_repo = team_repo
         end
 

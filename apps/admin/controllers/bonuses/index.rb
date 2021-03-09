@@ -14,13 +14,20 @@ module Admin
         end
 
         def call(params)
-          @bonuses = @bonus_repo
-            .with_students
-            .map {|x| BonusInfo.new(x)}
-          @students = @student_repo
-            .all
-            .map {|x| StudentInfo.new(x)}
-            .reduce(Hash[]) {|h, s| h.merge({s.name => s.id})}
+          Hanami.logger.info "Looking for bonuses..."
+          begin
+            @bonuses = @bonus_repo
+              .with_students
+              .map {|x| BonusInfo.new(x)}
+            Hanami.logger.info "Looking for students..."
+            @students = @student_repo
+              .all
+              .map {|x| StudentInfo.new(x)}
+              .reduce(Hash[]) {|h, s| h.merge({s.name => s.id})}
+            Hanami.logger.info "Preparing a view..."
+          rescue => e
+            Hanami.logger.warn "Exception: #{e.to_s}"
+          end
         end
 
         private

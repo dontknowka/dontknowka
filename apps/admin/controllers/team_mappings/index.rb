@@ -10,7 +10,7 @@ module Admin
         expose :instance_name
 
         def initialize(mapping_repo: TeamMappingRepository.new,
-                       team_repo: TeamRepository.new,
+                       team_repo: TeacherTeamRepository.new,
                        instance_repo: HomeworkInstanceRepository.new)
           @mapping_repo = mapping_repo
           @team_repo= team_repo

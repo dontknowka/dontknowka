@@ -17,7 +17,7 @@
         <span><%= t.email %></span>
       </div>
       <div class="TableObject-item m-3">
-        <span><%= t.teacher_teams.map({|m| m.name}).join(', ') %></span>
+        <span><%= t.teacher_teams.map{|m| m.name}.join(', ') %></span>
       </div>
       <div class="TableObject-item">
         <%= form_for :teacher, routes.teacher_path(t.id), method: :delete do
