@@ -18,7 +18,7 @@ module Admin
         end
 
         def call(params)
-          @mappins = @team_mapping_repo.with_teams
+          @mappings = @team_mapping_repo.with_teams
           instances = @instance_repo.all
           @instances = instances.reduce(Hash[]) {|h, i| h.merge({i.name => i.id})}
           @instance_name = instances.reduce(Hash[]) {|h, i| h.merge({i.id => i.name})}

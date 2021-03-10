@@ -27,6 +27,16 @@ class EventsSwitch
           @event = :merge_pr
         end
       end
+    when 'pull_request_review'
+      case payload[:action]
+      when 'submitted'
+        case (payload[:review] || {})[:state]
+        when 'approved'
+          @event = :approve
+        when 'changes_requested'
+          @event = :request_changes
+        end
+      end
     end
   end
 end

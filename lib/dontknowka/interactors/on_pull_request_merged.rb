@@ -6,30 +6,14 @@ class OnPullRequestMerged
   expose :success
   expose :comment
 
-  def initialize(assignments: AssignmentRepository.new)
-    @assignments = assignments
+  def initialize(update_assignment: UpdateAssignmentApprove.new)
+    @update_assignment = update_assignment
   end
 
   def call(payload)
     repo = payload[:repository]
-    ass = @assignments.by_repo(repo[:name])
-    case ass.size
-    when 0
-      @success = false
-      @comment = 'No such assignment'
-    when 1
-      a = ass[0]
-      if a.status == 'ready' || a.status == 'in_progress'
-        @assignments.update(a.id, { status: 'approved' })
-        @success = true
-        @comment = ''
-      else
-        @success = false
-        @comment = "Unexpected assignment stage: #{a.status}"
-      end
-    else
-      @success = false
-      @comment = 'Several matching assignments'
-    end
+    res = @update_assignment.call(repo[:full_name])
+    @success= res.success
+    @comment = res.comment
   end
 end

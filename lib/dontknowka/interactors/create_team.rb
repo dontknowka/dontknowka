@@ -11,7 +11,13 @@ class CreateTeam
 
   def call(id, slug, name)
     begin
-      @repo.create({ id: id, slug: slug, name: name })
+      team = @repo.find(id)
+      if team.nil?
+        @repo.create({ id: id, slug: slug, name: name })
+      else
+        @repo.update(id, { slug: slug,
+                           name: name })
+      end
       @ok = true
     rescue
       @ok = false
