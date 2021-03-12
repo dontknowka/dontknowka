@@ -38,7 +38,8 @@ module Admin
                 instance_name = r[:name].delete_suffix("-#{owner.login}")
                 instance = @homework_instances.by_name(instance_name)
                 if instance.nil?
-                  Hanami.logger.debug "No instance for #{instance_name} (#{owner.login})"
+                  Hanami.logger.warn "No instance for #{instance_name} (#{owner.login})"
+                  next
                 else
                   ass = @assignments.create({ student_id: owner.github_id,
                                               homework_instance_id: instance.id,
