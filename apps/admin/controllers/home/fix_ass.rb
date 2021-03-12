@@ -34,7 +34,7 @@ module Admin
               asses = @assignments.by_student_id(owner.github_id)
               ass = asses.detect {|a| r[:name].start_with? a.homework_instance.name }
               if ass.nil?
-                Hanami.logger.debug "No assignment for repository #{r[:name]}, creating it"
+                Hanami.logger.info "No assignment for repository #{r[:name]}, creating it"
                 instance_name = r[:name].delete_suffix("-#{owner.login}")
                 instance = @homework_instances.by_name(instance_name)
                 if instance.nil?
@@ -49,16 +49,11 @@ module Admin
                                               url: r[:html_url],
                                               repo: repo })
                 end
-              elsif ass.status == 'open'
-                ass = @assignments.update(ass.id, { status: 'in_progress', url: r[:html_url], repo: repo })
-                Hanami.logger.debug "Set 'in progress' for #{r[:name]}"
-              elsif ass.repo != repo
-                Hanami.logger.debug "Fixing assignment repo name from #{ass.repo} to #{repo}"
-                ass = @assignments.update(ass.id, { url: r[:html_url], repo: repo })
               else
-                Hanami.logger.debug "Assignment for #{r[:name]} is already 'in_progress'"
+                ass = @assignments.update(ass.id, { status: 'in_progress', url: r[:html_url], repo: repo })
               end
               pulls = @fetch_pulls.call(repo, 'closed').pulls
+              Hanami.logger.info "Found closed PRs: #{pulls.map {|p| p[:html_url]}.join}"
               runs = []
               pulls.concat(@fetch_pulls.call(repo, 'open').pulls).each do |pull|
                 @fetch_reviews.call(repo, pull[:number]).reviews.each do |r|
@@ -82,9 +77,11 @@ module Admin
               end
               last_pull = pulls.detect {|p| p[:merge_commit_sha] }
               if !last_pull.nil?
+                Hanami.logger.info "Last closed PR: #{last_pull[:html_url]}"
                 @assignments.update(ass.id, { status: 'approved' })
               else
                 last_check = runs.sort_by {|cr| DateTime.parse(cr['completed_at'])}.last
+                Hanami.logger.info "Found last check run: #{last_check[:html_url]}" unless last_check.nil?
                 if !last_check.nil? && last_check['conclusion'] == 'success'
                   @assignments.update(ass.id, { status: 'ready' })
                 end
