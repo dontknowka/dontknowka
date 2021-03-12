@@ -53,6 +53,7 @@ module Admin
                 ass = @assignments.update(ass.id, { status: 'in_progress', url: r[:html_url], repo: repo })
               end
               pulls = @fetch_pulls.call(repo, 'closed').pulls
+              last_pull = pulls.detect {|p| p[:merge_commit_sha] }
               Hanami.logger.info "Found closed PRs: #{pulls.map {|p| p[:html_url]}.join}"
               runs = []
               pulls.concat(@fetch_pulls.call(repo, 'open').pulls).each do |pull|
@@ -75,7 +76,6 @@ module Admin
                   @check_runs.create(id: cr['id'], assignment_id: ass.id, url: cr['html_url'])
                 end
               end
-              last_pull = pulls.detect {|p| p[:merge_commit_sha] }
               if !last_pull.nil?
                 Hanami.logger.info "Last closed PR: #{last_pull[:html_url]}"
                 @assignments.update(ass.id, { status: 'approved' })
