@@ -25,15 +25,24 @@ class OnRequestChanges
       @success = false
       @comment = 'No repository data'
     else
-      res = @review_creator.call(review[:id],
-                                 author[:id],
-                                 repo[:full_name],
-                                 pull[:number],
-                                 review[:submitted_at],
-                                 review[:body] || '',
-                                 review[:html_url] || '')
-      @success = res.success
-      @comment = res.comment
+      @success = false
+      @comment = 'All attempts to create review failed'
+      5.times do
+        begin
+          res = @review_creator.call(review[:id],
+                                     author[:id],
+                                     repo[:full_name],
+                                     pull[:number],
+                                     review[:submitted_at],
+                                     review[:body] || '',
+                                     review[:html_url] || '')
+          @success = res.success
+          @comment = res.comment
+          break
+        rescue => e
+          Hanami.logger.debug "Failed attempt to create review: #{e.to_s}"
+        end
+      end
     end
   end
 end

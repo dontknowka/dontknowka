@@ -1,0 +1,57 @@
+<div class="m-6">
+  <div class="TableObject">
+    <div class="TableObject-item">
+      <span class="Counter mr-1"><%= total %></span>
+    </div>
+    <div class="TableObject-item">
+      <%= name %>
+    </div>
+    <div class="TableObject-item">
+      <%= homework.prepare_deadline %>
+    </div>
+    <div class="TableObject-item">
+      <%= homework.approve_deadline %>
+    </div>
+  </div>
+  <% instances.each do |name, assignments| %>
+    <div class="m-4">
+      <div>
+        <span class="text-bold"><%= name %></span>
+      </div>
+      <table style="border-collapse: separate; border-spacing: 20px;">
+        <tr>
+          <th><span class="Counter mr-1"><%= assignments.size %></span></th>
+          <th>Login</th>
+          <th>Student</th>
+          <th>Status</th>
+          <th>Reviews</th>
+          <th>Check runs</th>
+          <th>Worth</th>
+          <th>Repo</th>
+        </tr>
+        <% assignments.each do |a| %>
+          <tr>
+            <td></td>
+            <td><%= a[:student_login] %></td>
+            <td><%= (a[:student_first_name] || '') + ' ' + (a[:student_last_name] || '') %></td>
+            <td><span class="Label Label--large <%= colours[a[:assignment_status]] %>"><%= a[:assignment_status] %></span></td>
+            <td><span class="Label Label--pink"><%= a[:reviews] %></span></td>
+            <td><span class="Label Label--orange"><%= a[:check_runs] %></span></td>
+            <td>
+                <span class="diffstat">
+                  <span class="text-green"><%= a[:homework_instance_worth] %></span>
+                  <span class="text-red">-<%= a[:reviews] + a[:check_runs] / 7 %></span>
+                  <span class="text-yellow">=<%= a[:homework_instance_worth] - (a[:reviews] + a[:check_runs] / 7) %></span>
+                </span>
+            </td>
+            <td>
+              <% if !a[:assignment_url].nil? && !a[:assignment_url].empty? %>
+                <a class="btn" role="button" href="<%= a[:assignment_url] %>">Go to repo</a>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+</div>

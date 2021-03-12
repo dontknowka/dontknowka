@@ -12,7 +12,7 @@ class OnPullRequestCreated
 
   def call(payload)
     repo = payload[:repository]
-    ass = @assignments.by_repo(repo[:name])
+    ass = @assignments.by_repo(repo[:full_name])
     case ass.size
     when 0
       @success = false

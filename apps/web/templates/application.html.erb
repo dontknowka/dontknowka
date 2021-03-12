@@ -13,6 +13,11 @@
         </a>
       </div>
       <div class="Header-item mr-0">
+        <a class="Header-link" href="<%= routes.student_score_path %>">
+          <span class="Counter mr-1 bg-green text-white"><%= local :total_score %></span>
+        </a>
+      </div>
+      <div class="Header-item mr-0">
         <a class="Header-link" href="<%= local :profile %>">
           <img class="avatar" height="32" width="32" alt="<%= local :login %>" src="<%= local :avatar %>" />
         </a>

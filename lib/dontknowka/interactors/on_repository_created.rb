@@ -17,9 +17,18 @@ class OnRepositoryCreated
       @comment = 'Uninteresting'
     else
       repo = payload[:repository]
-      res = @update_assignment.call(repo[:full_name], repo[:html_url])
-      @success = res.success
-      @comment = res.comment
+      @success = false
+      @comment = 'All attempts to update assignment failed'
+      5.times do
+        begin
+          res = @update_assignment.call(repo[:full_name], repo[:html_url])
+          @success = res.success
+          @comment = res.comment
+          break
+        rescue => e
+          Hanami.logger.debug "Failed attempt to update repo details: #{e.to_s}"
+        end
+      end
     end
   end
 end

@@ -7,7 +7,7 @@ class UpdateAssignmentStart
   expose :comment
 
   def initialize(assignments: AssignmentRepository.new,
-                 team_mappings: TeamMapingRepository.new,
+                 team_mappings: TeamMappingRepository.new,
                  initialize_repo: InitializeRepo.new)
     @assignments = assignments
     @team_mappings = team_mappings

@@ -6,13 +6,15 @@ class UpdateAssignmentCheck
   expose :success
   expose :comment
 
-  def initialize(assignments: AssignmentRepository.new)
+  def initialize(assignments: AssignmentRepository.new,
+                 check_runs: CheckRunRepository.new)
     @assignments = assignments
+    @check_runs = check_runs
     @good_trans = { 'open' => 'ready', 'in_progress' => 'ready' }
     @bad_trans = { 'ready' => 'in_progress', 'reviewed' => 'in_progress' }
   end
 
-  def call(repo, conclusion)
+  def call(repo, conclusion, id, url)
     ass = @assignments.by_repo(repo)
     case ass.size
     when 0
@@ -20,9 +22,16 @@ class UpdateAssignmentCheck
       @comment = 'No associated assignment'
     when 1
       a = ass[0]
-      update = { }
       if a.status != 'approved'
-        update[:check_runs] = a.check_runs + 1
+        cr = @check_runs.find(id)
+        if cr.nil?
+          @check_runs.create(id: id, assignment_id: a.id, url: url)
+        else
+          Hanami.logger.debug "Already processed #{id} check run"
+          @success = true
+          @comment = 'Already processed that check run'
+          return
+        end
       end
       new_status = case conclusion
                    when 'success'
@@ -33,10 +42,9 @@ class UpdateAssignmentCheck
       if new_status.nil?
         @comment = "No '#{conclusion}' transition from '#{a.status}'"
       else
-        update[:status] = new_status
+        @assignments.update(a.id, status: new_status)
         @comment = ''
       end
-      @assignments.update(a.id, update)
       @success = true
     else
       @success = false

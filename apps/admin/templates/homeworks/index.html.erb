@@ -19,6 +19,9 @@
         end
       end %>
       <div class="TableObject-item">
+        <a class="btn" role="button" href="<%= routes.homework_path(hw.id) %>">View</a>
+      </div>
+      <div class="TableObject-item">
         <%= form_for :homework, routes.homework_path(hw.id), method: :delete do
           div class: 'form-actions' do
             submit 'Delete', class: 'btn btn-danger'

@@ -9,10 +9,10 @@ post '/create_teacher', to: 'home#create_teacher', as: :create_teacher
 
 post '/test', to: 'home#test'
 
-resources :homeworks, except: [:show]
-resources :instances, except: [:show]
-resources :sets, except: [:show]
-resources :ta_mappings, except: [:show]
+resources :homeworks, except: [:edit]
+resources :instances, except: [:show, :edit]
+resources :sets, except: [:show, :edit]
+resources :ta_mappings, except: [:show, :edit]
 resources :teachers, only: [:index, :create, :destroy]
 resources :teams, only: [:index, :create, :destroy]
 resources :teacher_mappings, only: [:index, :create, :destroy]
@@ -20,3 +20,6 @@ resources :team_mappings, only: [:index, :create, :destroy]
 resources :bonuses, only: [:index, :create, :update, :destroy]
 get '/teachers/populate', to: 'teachers#populate', as: :populate_teachers
 get '/teams/populate', to: 'teams#populate', as: :populate_teams
+
+get '/students', to: 'students#index', as: :students
+get '/students/:id', to: 'students#view', as: :student

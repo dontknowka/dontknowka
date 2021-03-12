@@ -17,6 +17,8 @@ class EventsSwitch
       case payload[:action]
       when 'created'
         @event = :create_repository
+      when 'deleted'
+        @event = :delete_repository
       end
     when 'pull_request'
       case payload[:action]

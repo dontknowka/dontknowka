@@ -1,0 +1,26 @@
+<div class="m-6">
+  <table style="border-collapse: separate; border-spacing: 20px;">
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Worth</th>
+      <th>Checks</th>
+      <th>Reviews</th>
+      <th>Malus</th>
+      <th>Score</th>
+      <th></th>
+    </tr>
+    <% assignments.each do |a| %>
+      <tr>
+        <td><%= a.name %></td>
+        <td><span class="Label Label--large <%= a.colour ? ('Label--' + a.colour) : '' %>"><%= a.status %></span></td>
+        <td><span class="Label Label--large Label--green"><%= a.worth %></span></td>
+        <td><span class="Label Label--large Label--yellow"><%= a.check_runs %></span></td>
+        <td><span class="Label Label--large Label--orange"><%= a.reviews.size %></span></td>
+        <td><span class="Label Label--large Label--red"><%= a.review_malus %></span></td>
+        <td><span class="Label Label--large Label--pink"><%= a.score %></span></td>
+        <td><a class="btn btn-primary my-3" role="button" href="<%= a.url %>">Go to repo</a></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

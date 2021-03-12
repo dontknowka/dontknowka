@@ -8,6 +8,9 @@
   <body>
     <div class="Header">
       <div class="Header-item">
+        <a class="Header-link" href="<%= routes.root_path %>">Main</a>
+      </div>
+      <div class="Header-item">
         <a class="Header-link" href="<%= routes.homeworks_path %>">Homeworks</a>
       </div>
       <div class="Header-item">
@@ -27,6 +30,9 @@
       </div>
       <div class="Header-item">
         <a class="Header-link" href="<%= routes.bonuses_path %>">Bonuses</a>
+      </div>
+      <div class="Header-item">
+        <a class="Header-link" href="<%= routes.students_path %>">Students</a>
       </div>
     </div>
     <%= yield %>

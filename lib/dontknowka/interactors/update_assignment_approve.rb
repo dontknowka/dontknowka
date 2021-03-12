@@ -19,14 +19,19 @@ class UpdateAssignmentApprove
       @comment = 'No associated assignment'
     when 1
       a = ass[0]
-      new_status = @transitions[a.status]
-      if new_status.nil?
-        @success = false
-        @comment = "Unexpected assignment stage '#{a.status}' for being approved"
-      else
-        @assignments.update(a.id, status: new_status)
+      if a.status == 'approved'
         @success = true
-        @comment = ''
+        @comment = 'Already approved'
+      else
+        new_status = @transitions[a.status]
+        if new_status.nil?
+          @success = false
+          @comment = "Unexpected assignment stage '#{a.status}' for being approved"
+        else
+          @assignments.update(a.id, status: new_status)
+          @success = true
+          @comment = ''
+        end
       end
     else
       @success = false

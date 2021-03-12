@@ -12,8 +12,17 @@ class OnPullRequestMerged
 
   def call(payload)
     repo = payload[:repository]
-    res = @update_assignment.call(repo[:full_name])
-    @success= res.success
-    @comment = res.comment
+    @success = false
+    @comment = 'All attempts to update assignment failed'
+    5.times do
+      begin
+        res = @update_assignment.call(repo[:full_name])
+        @success= res.success
+        @comment = res.comment
+        break
+      rescue => e
+        Hanami.logger.debug "Failed attempt to update approve: #{e.to_s}"
+      end
+    end
   end
 end

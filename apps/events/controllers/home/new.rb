@@ -8,11 +8,13 @@ module Events
 
         def initialize(events_switch: EventsSwitch.new,
                        on_repository_created: OnRepositoryCreated.new,
+                       on_repository_deleted: OnRepositoryDeleted.new,
                        on_check_run: OnCheckRunCompleted.new,
                        on_pr_merged: OnPullRequestMerged.new,
                        on_request_changes: OnRequestChanges.new)
           @switch = events_switch
           @on_repository_created = on_repository_created
+          @on_repository_deleted = on_repository_deleted
           @on_check_run = on_check_run
           @on_pr_merged = on_pr_merged
           @on_request_changes = on_request_changes
@@ -28,6 +30,13 @@ module Events
               Hanami.logger.debug "Unsuccessful 'repository created' event processing - #{res.comment}"
             else
               Hanami.logger.debug "Successful 'repository created' event processing - #{res.comment}"
+            end
+          when :delete_repository
+            res = @on_repository_deleted.call(params)
+            if !res.success
+              Hanami.logger.debug "Unsuccessful 'repository deleted' event processing - #{res.comment}"
+            else
+              Hanami.logger.debug "Successful 'repository deleted' event processing - #{res.comment}"
             end
           when :check_run
             res = @on_check_run.call(params)

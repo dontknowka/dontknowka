@@ -1,15 +1,15 @@
 <div class="p-6">
   <% bonuses.each do |b| %>
     <div class="TableObject p-4">
-      <div class="TableObject-item m-2">
-        <span class="<%= b.student_name %>"</span>
+      <div class="TableObject-item TableObject-item--primary pr-2">
+        <span><%= b.student_name %></span>
       </div>
       <%= form_for :bonus, routes.bonus_path(b.id), values: { bonus: b }, method: :patch do
-        div class: 'TableObject-item m-2' do
+        div class: 'TableObject-item pr-2' do
           label :worth, class: 'form-label'
           number_field :worth, class: 'ml-2 form-control'
         end
-        div class: 'TableObject-item m-2' do
+        div class: 'TableObject-item pr-2' do
           label :why, class: 'form-label'
           text_field :why, class: 'ml-2 form-control'
         end
@@ -17,7 +17,7 @@
           submit 'Edit', class: 'btn btn-primary'
         end
       end %>
-      <div class="TableObject-item">
+      <div class="TableObject-item pl-2">
         <%= form_for :bonus, routes.bonus_path(b.id), method: :delete do
           div class: 'form-actions' do
             submit 'Delete', class: 'btn btn-danger'

@@ -30,9 +30,18 @@ class OnCheckRunCompleted
           @success = false
           @comment = 'No associated repository'
         else
-          res = @update_assignment.call(repo_name, check_run[:conclusion])
-          @success = res.success
-          @comment = res.comment
+          @success = false
+          @comment = 'All attempts to update assignment failed'
+          5.times do
+            begin
+              res = @update_assignment.call(repo_name, check_run[:conclusion], check_run[:id], check_run[:html_url])
+              @success = res.success
+              @comment = res.comment
+              break
+            rescue => e
+              Hanami.logger.debug "Failed attempt to update check_run: #{e.to_s}"
+            end
+          end
         end
       else
         @success = true

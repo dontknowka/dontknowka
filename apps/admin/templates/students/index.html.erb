@@ -1,0 +1,17 @@
+<div class="m-6">
+  <table style="border-collapse: separate; border-spacing: 20px;">
+    <% students.each do |student| %>
+      <tr>
+        <td><%= student.group %></td>
+        <td><%= student.id %></td>
+        <td><%= student.login %></td>
+        <td><%= student.first_name %></td>
+        <td><%= student.last_name %></td>
+        <td><span class="Label Label--large Label--green"><%= scores[student.id] %></span></td>
+        <td>
+          <a class="btn btn-primary" role="button" href="<%= routes.student_path(student.id) %>">View</a>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

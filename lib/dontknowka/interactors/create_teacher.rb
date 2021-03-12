@@ -16,7 +16,7 @@ class CreateTeacher
       if teacher.nil?
         @repo.create({ id: id,
                        login: login,
-                       first_name: name_parts[0],
+                       first_name: name_parts[0] || login,
                        last_name: name_parts[1] || '',
                        email: email || "no-email-#{id}",
                        avatar: avatar })

@@ -10,7 +10,6 @@ Hanami::Model.migration do
       column :approve_deadline, DateTime, null: false
       column :url, String
       column :repo, String
-      column :check_runs, Integer, default: 0
       column :last_update, DateTime
 
       column :created_at, DateTime, null: false
