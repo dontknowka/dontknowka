@@ -10,20 +10,27 @@ module Web
         expose :login
         expose :avatar
 
-        def initialize(students: StudentRepository.new,
+        expose :bonuses
+        expose :assignments
+
+        def initialize(student_repo: StudentRepository.new,
                        get_student_score: GetStudentScore.new)
-          @students = students
+          @student_repo = student_repo
           @get_student_score = get_student_score
         end
 
         def call(params)
-          student = @students.find(session[:github_id])
+          student = @student_repo.find(session[:github_id])
           halt 404 if student.nil?
-          @total_score = @get_student_score.call(student).total
+          score = @get_student_score.call(student)
+          @total_score = score.total
           @login = student.login
           @avatar = student.avatar
           @profile = routes.student_profile_path
           @home = routes.student_path
+
+          @bonuses = score.bonuses
+          @assignments = score.assignments
         end
       end
     end

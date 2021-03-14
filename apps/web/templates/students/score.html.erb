@@ -1,0 +1,49 @@
+<div class="p-4">
+  <div class="p-4">
+    <p class="h3">Total score: <%= total_score %></p>
+  </div>
+  <% if !bonuses.empty? %>
+    <div class="p-4">
+      <p class="h3">Bonuses</p>
+      <table style="border-collapse: separate; border-spacing: 20px;">
+        <% bonuses.each do |b| %>
+          <tr>
+            <td><%= b.worth %></td>
+            <td><%= b.why %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+  <% if !assignments.empty? %>
+    <div class="p-4">
+      <p class="h3">Assignments</p>
+      <table style="border-collapse: separate; border-spacing: 20px;">
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Worth</th>
+          <th>Score</th>
+          <th>Changes requested</th>
+          <th>Review penalty</th>
+          <th>Check runs</th>
+          <th>Check runs penalty</th>
+          <th></th>
+        </tr>
+        <% assignments.each do |a| %>
+          <tr>
+            <td><%= a.name %></td>
+            <td><span class="Label Label--large <%= a.colour.nil? ? '' : "Label--#{a.colour}" %>"><%= a.status %></span></td>
+            <td><span class="Label Label--large Label--pink"><%= a.worth %></span></td>
+            <td><span class="Label Label--large Label--green"><%= a.score %></span></td>
+            <td><span class="Label Label--large Label--orange"><%= a.reviews.size %></span></td>
+            <td><span class="Label Label--large Label--red"><%= a.review_malus %></span></td>
+            <td><span class="Label Label--large Label--yellow"><%= a.check_runs %></span></td>
+            <td><span class="Label Label--large Label--red"><%= a.check_malus %></span></td>
+            <td><a class="btn btn-primary" role="button" href="<%= a.url %>">Go to repo</a></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+</div>
