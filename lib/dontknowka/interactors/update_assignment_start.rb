@@ -27,7 +27,7 @@ class UpdateAssignmentStart
         @success = false
         @comment = "Not found TA mapping for HW instance #{a.homework_instance_id}"
       else
-        @initialize_repo.call(ta.teacher_team.id, ta.teacher_team.slug, repo)
+        @initialize_repo.call(ta.teacher_team.id, ta.teacher_team.slug, repo_full)
         if a.status == 'open'
           @assignments.update(a.id, { status: 'in_progress', url: repo_url, repo: repo_full })
           @success = true
