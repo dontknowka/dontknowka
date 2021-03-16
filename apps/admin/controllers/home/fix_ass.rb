@@ -49,6 +49,9 @@ module Admin
                                               url: r[:html_url],
                                               repo: repo })
                 end
+              elsif ass.status == 'approved'
+                Hanami.logger.info "Assignment for #{r[:name]} is already approved"
+                next
               else
                 ass = @assignments.update(ass.id, { status: 'in_progress', url: r[:html_url], repo: repo })
               end
@@ -58,8 +61,7 @@ module Admin
               runs = []
               pulls.concat(@fetch_pulls.call(repo, 'open').pulls).each do |pull|
                 @fetch_reviews.call(repo, pull[:number]).reviews.each do |r|
-                  review = @reviews.find(r[:id])
-                  if review.nil?
+                  if @reviews.find(r[:id]).nil?
                     @reviews.create({ id: r[:id],
                                       assignment_id: ass.id,
                                       teacher_id: r[:user][:id],
@@ -86,6 +88,8 @@ module Admin
                   @assignments.update(ass.id, { status: 'ready' })
                 end
               end
+            else
+              Hanami.logger.info "Not found an owner for repository #{repo}"
             end
           end
           redirect_to routes.root_path
