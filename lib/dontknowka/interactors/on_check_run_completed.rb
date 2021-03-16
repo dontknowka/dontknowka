@@ -24,7 +24,7 @@ class OnCheckRunCompleted
             repo_name = repo[:name]
           end
         else
-          repo_name = repo[:full_name]
+          repo_name = repo[:name]
         end
         if repo_name.nil? || repo_name.empty?
           @success = false

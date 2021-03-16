@@ -16,7 +16,7 @@ class OnPullRequestMerged
     @comment = 'All attempts to update assignment failed'
     5.times do
       begin
-        res = @update_assignment.call(repo[:full_name])
+        res = @update_assignment.call(repo[:name])
         @success= res.success
         @comment = res.comment
         break

@@ -14,7 +14,7 @@ class UpdateAssignmentStart
     @initialize_repo = initialize_repo
   end
 
-  def call(repo, repo_url)
+  def call(repo, repo_full, repo_url)
     ass = @assignments.by_repo(repo)
     case ass.size
     when 0
@@ -29,7 +29,7 @@ class UpdateAssignmentStart
       else
         @initialize_repo.call(ta.teacher_team.id, ta.teacher_team.slug, repo)
         if a.status == 'open'
-          @assignments.update(a.id, { status: 'in_progress', url: repo_url })
+          @assignments.update(a.id, { status: 'in_progress', url: repo_url, repo: repo_full })
           @success = true
           @comment = ''
         else

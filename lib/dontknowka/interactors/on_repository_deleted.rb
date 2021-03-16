@@ -16,7 +16,7 @@ class OnRepositoryDeleted
     @comment = 'All attempts to delete assignment failed'
     5.times do
       begin
-        res = @delete_assignment.call(repo[:full_name])
+        res = @delete_assignment.call(repo[:name])
         @success = res.success
         @comment = res.comment
         break

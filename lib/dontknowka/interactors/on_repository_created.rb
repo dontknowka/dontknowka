@@ -21,7 +21,7 @@ class OnRepositoryCreated
       @comment = 'All attempts to update assignment failed'
       5.times do
         begin
-          res = @update_assignment.call(repo[:full_name], repo[:html_url])
+          res = @update_assignment.call(repo[:name], repo[:full_name], repo[:html_url])
           @success = res.success
           @comment = res.comment
           break

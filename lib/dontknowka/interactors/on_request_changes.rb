@@ -21,7 +21,7 @@ class OnRequestChanges
     elsif pull[:number].nil?
       @success = false
       @comment = 'No pull request data'
-    elsif repo[:full_name].nil?
+    elsif repo[:name].nil?
       @success = false
       @comment = 'No repository data'
     else
@@ -31,7 +31,7 @@ class OnRequestChanges
         begin
           res = @review_creator.call(review[:id],
                                      author[:id],
-                                     repo[:full_name],
+                                     repo[:name],
                                      pull[:number],
                                      review[:submitted_at],
                                      review[:body] || '',
