@@ -26,7 +26,7 @@ class OnRepositoryCreated
           @comment = res.comment
           break
         rescue => e
-          Hanami.logger.debug "Failed attempt to update repo details: #{e.to_s}"
+          Hanami.logger.info "Failed attempt to update repo details: #{e.to_s}"
         end
       end
     end

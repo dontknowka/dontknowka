@@ -21,7 +21,7 @@ class OnPullRequestMerged
         @comment = res.comment
         break
       rescue => e
-        Hanami.logger.debug "Failed attempt to update approve: #{e.to_s}"
+        Hanami.logger.info "Failed attempt to update approve: #{e.to_s}"
       end
     end
   end

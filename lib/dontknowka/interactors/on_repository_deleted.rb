@@ -21,7 +21,7 @@ class OnRepositoryDeleted
         @comment = res.comment
         break
       rescue => e
-        Hanami.logger.debug "Failed attempt to delete assignment: #{e.to_s}"
+        Hanami.logger.info "Failed attempt to delete assignment: #{e.to_s}"
       end
     end
   end

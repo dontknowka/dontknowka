@@ -39,7 +39,7 @@ class OnCheckRunCompleted
               @comment = res.comment
               break
             rescue => e
-              Hanami.logger.debug "Failed attempt to update check_run: #{e.to_s}"
+              Hanami.logger.info "Failed attempt to update check_run: #{e.to_s}"
             end
           end
         end
