@@ -12,16 +12,24 @@ class OnPullRequestMerged
 
   def call(payload)
     repo = payload[:repository]
-    @success = false
-    @comment = 'All attempts to update assignment failed'
-    5.times do
-      begin
-        res = @update_assignment.call(repo[:name])
-        @success= res.success
-        @comment = res.comment
-        break
-      rescue => e
-        Hanami.logger.info "Failed attempt to update approve: #{e.to_s}"
+    pull = payload[:pull_request]
+    sender = payload[:sender]
+    if pull[:user][:login] == sender[:login]
+      @success = false
+      @comment = 'Self-merge detected'
+      Hanami.logger.warn "Self-merge detected: #{pull[:html_url]} by #{sender[:login]}"
+    else
+      @success = false
+      @comment = 'All attempts to update assignment failed'
+      5.times do
+        begin
+          res = @update_assignment.call(repo[:name])
+          @success= res.success
+          @comment = res.comment
+          break
+        rescue => e
+          Hanami.logger.info "Failed attempt to update approve: #{e.to_s}"
+        end
       end
     end
   end
