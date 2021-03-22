@@ -9,7 +9,7 @@ class FetchPullRequests
     @client = client
   end
 
-  def call(repo_name, state)
+  def call(repo_name, state: 'all')
     begin
       @pulls = @client.pull_requests(repo_name, state: state)
     rescue Octokit::NotFound

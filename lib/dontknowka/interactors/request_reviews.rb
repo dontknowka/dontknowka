@@ -21,7 +21,7 @@ class RequestReviews
     begin
       @client.post(url, payload, headers)
     rescue => e
-      Hanami.logger.debug e.to_s
+      Hanami.logger.warn e.to_s
       @valid = false
     else
       @valid = true

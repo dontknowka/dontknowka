@@ -5,7 +5,7 @@ class ProtectBranch
 
   expose :valid
 
-  def initialize(client: OrgClient.new, branch: 'master', checks: [])
+  def initialize(client: OrgClient.new, branch: 'master', checks: ['build'])
     @client = client
     @branch = branch
     @checks = checks

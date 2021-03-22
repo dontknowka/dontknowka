@@ -14,7 +14,7 @@ class UpdateAssignmentCheck
     @bad_trans = { 'ready' => 'in_progress', 'reviewed' => 'in_progress' }
   end
 
-  def call(repo, conclusion, id, url)
+  def call(repo, conclusion, id, url, completed_at)
     ass = @assignments.by_repo(repo)
     case ass.size
     when 0
@@ -25,7 +25,7 @@ class UpdateAssignmentCheck
       if a.status != 'approved'
         cr = @check_runs.find(id)
         if cr.nil?
-          @check_runs.create(id: id, assignment_id: a.id, url: url)
+          @check_runs.create(id: id, assignment_id: a.id, url: url, completed_at: completed_at)
         else
           Hanami.logger.debug "Already processed #{id} check run"
           @success = true

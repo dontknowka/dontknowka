@@ -34,7 +34,7 @@ class OnCheckRunCompleted
           @comment = 'All attempts to update assignment failed'
           5.times do
             begin
-              res = @update_assignment.call(repo_name, check_run[:conclusion], check_run[:id], check_run[:html_url])
+              res = @update_assignment.call(repo_name, check_run[:conclusion], check_run[:id], check_run[:html_url], check_run[:completed_at])
               @success = res.success
               @comment = res.comment
               break
