@@ -50,26 +50,42 @@ class AssignmentRepository < Hanami::Repository
   end
 
   def awaiting_reviews(instances)
-    assignments.read("SELECT assignments.id, assignments.status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) LEFT JOIN reviews ON (assignments.id = reviews.assignment_id) WHERE assignments.status = 'ready' AND reviews.assignment_id IS NULL ORDER BY assignments.created_at, approve_deadline")
-      .map
-      .to_a
+    if instances.empty?
+      []
+    else
+      assignments.read("SELECT assignments.id, assignments.status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) LEFT JOIN reviews ON (assignments.id = reviews.assignment_id) WHERE assignments.status = 'ready' AND reviews.assignment_id IS NULL ORDER BY assignments.created_at, approve_deadline")
+        .map
+        .to_a
+    end
   end
 
   def updated_after_review(instances)
-    assignments.read("SELECT assignments.id, assignments.status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login, MAX(check_runs.completed_at) AS update_at FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) INNER JOIN reviews ON (assignments.id = reviews.assignment_id) INNER JOIN check_runs ON (assignments.id = check_runs.assignment_id) WHERE assignments.status = 'ready' AND reviews.submitted_at < check_runs.completed_at GROUP BY assignments.id, assignments.status, homework_instances.name, approve_deadline, assignments.repo, assignments.url, students.login ORDER BY MAX(check_runs.completed_at)")
-      .map
-      .to_a
+    if instances.empty?
+      []
+    else
+      assignments.read("SELECT assignments.id, assignments.status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login, MAX(check_runs.completed_at) AS update_at FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) INNER JOIN reviews ON (assignments.id = reviews.assignment_id) INNER JOIN check_runs ON (assignments.id = check_runs.assignment_id) WHERE assignments.status = 'ready' AND reviews.submitted_at < check_runs.completed_at GROUP BY assignments.id, assignments.status, homework_instances.name, approve_deadline, assignments.repo, assignments.url, students.login ORDER BY MAX(check_runs.completed_at)")
+        .map
+        .to_a
+    end
   end
 
   def expired(instances, deadline)
-    assignments.read("SELECT assignments.id, assignments.status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) WHERE assignments.status != 'approved' AND assignments.approve_deadline < '#{deadline}' ORDER BY assignments.created_at, approve_deadline")
-      .map
-      .to_a
+    if instances.empty?
+      []
+    else
+      assignments.read("SELECT assignments.id, assignments.status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) WHERE assignments.status != 'approved' AND assignments.approve_deadline < '#{deadline}' ORDER BY assignments.created_at, approve_deadline")
+        .map
+        .to_a
+    end
   end
 
   def not_approved(instances)
-    assignments.read("SELECT assignments.id, assignments.status AS status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login, MAX(check_runs.completed_at) AS update_at FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) LEFT JOIN check_runs ON (assignments.id = check_runs.assignment_id) WHERE assignments.status != 'approved' GROUP BY assignments.id, assignments.status, homework_instances.name, approve_deadline, assignments.repo, assignments.url, students.login ORDER BY MAX(check_runs.completed_at)")
-      .map
-      .to_a
+    if instances.empty?
+      []
+    else
+      assignments.read("SELECT assignments.id, assignments.status AS status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login, MAX(check_runs.completed_at) AS update_at FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) LEFT JOIN check_runs ON (assignments.id = check_runs.assignment_id) WHERE assignments.status != 'approved' GROUP BY assignments.id, assignments.status, homework_instances.name, approve_deadline, assignments.repo, assignments.url, students.login ORDER BY MAX(check_runs.completed_at)")
+        .map
+        .to_a
+    end
   end
 end
