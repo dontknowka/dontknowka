@@ -15,6 +15,9 @@ class FetchPullRequests
     rescue Octokit::NotFound
       Hanami.logger.debug "Not found repository #{repo_name}?"
       @pulls = []
+    rescue Octokit::InvalidRepository
+      Hanami.logger.debug "Not found repository #{repo_name}?"
+      @pulls = []
     end
   end
 end
