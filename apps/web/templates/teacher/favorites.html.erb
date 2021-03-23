@@ -1,0 +1,20 @@
+<div class="p-6">
+  <%= form_for :teacher_mapping, routes.teacher_favorites_path, values: { teacher_mapping: teacher_mapping } do
+    homework_instances.each do |hw|
+      div class: 'TableObject p-4' do
+        div class: 'TableObject-item p-2' do
+          check_box hw.id, class: 'form-check-input'
+        end
+        div class: 'TableObject-item TableObject-item--primary p-2' do
+          span do
+            hw.name
+          end
+        end
+      end
+    end
+    submit 'Save', class: 'btn btn-primary'
+    a class: 'btn', role: 'button', href: routes.teacher_path do
+      "Back"
+    end
+  end %>
+</div>

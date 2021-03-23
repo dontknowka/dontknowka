@@ -12,4 +12,10 @@ class HomeworkInstanceRepository < Hanami::Repository
       .map_to(HomeworkInstance)
       .one
   end
+
+  def with_homeworks
+    aggregate(:homework)
+      .map_to(HomeworkInstance)
+      .to_a
+  end
 end

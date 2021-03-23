@@ -5,7 +5,7 @@ class CheckMembership
 
   expose :result
 
-  def initialize(client: OrgClient.new, org: nil)
+  def initialize(client: OrgClient.new, org: ENV['GITHUB_ORG'])
     @client = client
     @org = org
   end

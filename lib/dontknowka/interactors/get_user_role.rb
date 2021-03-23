@@ -5,7 +5,7 @@ class GetUserRole
 
   expose :role
 
-  def initialize(client: OrgClient.new, org: nil, ta_team: nil)
+  def initialize(client: OrgClient.new, org: ENV['GITHUB_ORG'], ta_team: ENV['TA_TEAM'])
     @client = client
     @org = org
     @ta_team = ta_team

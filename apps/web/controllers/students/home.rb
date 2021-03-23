@@ -6,7 +6,7 @@ module Web
 
         before :authenticate?
 
-        expose :student
+        expose :student # FIXME: is this exposure really used in view/template?
         expose :avatar
         expose :login
         expose :home
@@ -14,7 +14,7 @@ module Web
         expose :homeworks
         expose :total_score
 
-        def initialize(check_membership: CheckMembership.new(org: ENV['GITHUB_ORG']),
+        def initialize(check_membership: CheckMembership.new,
                        students: StudentRepository.new,
                        get_student_homework: GetStudentHomework.new,
                        get_student_score: GetStudentScore.new)

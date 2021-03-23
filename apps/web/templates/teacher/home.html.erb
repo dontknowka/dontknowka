@@ -1,0 +1,83 @@
+<div class="m-6">
+  <div class="m-4">
+    <p class="h3">Awaiting review</p>
+    <table style="border-collapse: separate; border-spacing: 20px;">
+      <tr>
+        <th>Name</th>
+        <th>Days left</th>
+        <th>Student</th>
+        <th>Open PR</th>
+        <th>Repository</th>
+      </tr>
+      <% awaiting.each do |a| %>
+        <tr>
+          <td><%= a.name %></td>
+          <td><span class="text-bold <%= a.deadline_style %>"><%= a.deadline %></span></td>
+          <td><%= a.login %></td>
+          <td>
+            <% if !a.url.nil? %>
+              <a class="btn btn-primary" role="button" href="<%= a.url %>" target="_blank" rel="noopener noreferrer">Go to PR</a>
+            <% end %>
+          </td>
+          <td>
+            <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="m-4">
+    <p class="h3">Updated after review</p>
+    <table style="border-collapse: separate; border-spacing: 20px;">
+      <tr>
+        <th>Name</th>
+        <th>Days left</th>
+        <th>Student</th>
+        <th>Last update</th>
+        <th>Open PR</th>
+        <th>Repository</th>
+      </tr>
+      <% updated.each do |a| %>
+        <tr>
+          <td><%= a.name %></td>
+          <td><span class="text-bold <%= a.deadline_style %>"><%= a.deadline %></span></td>
+          <td><%= a.login %></td>
+          <td><%= a.updated_at %></td>
+          <td>
+            <% if !a.url.nil? %>
+              <a class="btn btn-primary" role="button" href="<%= a.url %>" target="_blank" rel="noopener noreferrer">Go to PR</a>
+            <% end %>
+          </td>
+          <td>
+            <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="m-4">
+    <p class="h3">Expired?</p>
+    <table style="border-collapse: separate; border-spacing: 20px;">
+      <tr>
+        <th>Name</th>
+        <th>Student</th>
+        <th>Open PR</th>
+        <th>Repository</th>
+      </tr>
+      <% expired.each do |a| %>
+        <tr>
+          <td><%= a.name %></td>
+          <td><%= a.login %></td>
+          <td>
+            <% if !a.url.nil? %>
+              <a class="btn btn-primary" role="button" href="<%= a.url %>" target="_blank" rel="noopener noreferrer">Go to PR</a>
+            <% end %>
+          </td>
+          <td>
+            <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

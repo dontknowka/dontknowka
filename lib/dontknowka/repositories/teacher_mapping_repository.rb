@@ -16,4 +16,11 @@ class TeacherMappingRepository < Hanami::Repository
       .map_to(TeacherMapping)
       .one
   end
+
+  def by_teacher(id)
+    teacher_mappings
+      .where(teacher_id: id)
+      .map_to(TeacherMapping)
+      .to_a
+  end
 end

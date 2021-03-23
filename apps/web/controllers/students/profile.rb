@@ -10,10 +10,13 @@ module Web
         expose :profile
         expose :home
         expose :avatar
+        expose :total_score
         expose :student
 
-        def initialize(students: StudentRepository.new)
+        def initialize(students: StudentRepository.new,
+                       get_student_score: GetStudentScore.new)
           @students = students
+          @get_student_score = get_student_score
         end
 
         def call(params)
@@ -32,7 +35,7 @@ module Web
                                             group: params[:student][:group] })
             else
               name_parts = name.split
-              @student = Student.new(login: session[:login], first_name: name_parts[0], last_name: name_parts[1], email: email)
+              @student = Student.new(id: id, login: session[:login], first_name: name_parts[0], last_name: name_parts[1], email: email)
             end
           else
             if params[:student]
@@ -45,8 +48,9 @@ module Web
           end
           @login = session[:login]
           @avatar = session[:avatar]
-          @profile = routes.student_profile_path
           @home = routes.student_path
+          @profile = routes.student_profile_path
+          @total_score = @get_student_score.call(@student).total
         end
 
         private

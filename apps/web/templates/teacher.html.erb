@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+    <title>Neznayka</title>
+    <%= favicon %>
+  </head>
+  <body>
+    <div class="Header bg-gray-dark text-white p-3">
+      <div class="Header-item">
+        <a class="Header-link" href="<%= routes.teacher_path %>">
+          Home
+        </a>
+      </div>
+      <div class="Header-item">
+        <a class="Header-link" href="<%= routes.teacher_assignments_path %>">
+          Assignments
+        </a>
+      </div>
+      <div class="Header-item Header-item--full">
+        <a class="Header-link" href="<%= routes.teacher_favorites_path %>">
+          Choose favorites
+        </a>
+      </div>
+      <div class="Header-item mr-0">
+        <a class="Header-link" href="<%= routes.teacher_profile_path %>">
+          <img class="avatar" height="32" width="32" alt="<%= login %>" src="<%= avatar %>" />
+        </a>
+      </div>
+    </div>
+    <%= yield %>
+  </body>
+</html>
