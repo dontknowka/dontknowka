@@ -37,6 +37,7 @@ module Admin
             repo = r[:full_name]
             owner = @get_owner.call(repo)
             if !owner.login.nil?
+              last_update = r[:created_at]
               instance = nil
               asses = @assignments.by_student_id(owner.github_id)
               ass = asses.detect {|a| r[:name].start_with? a.homework_instance.name }
@@ -48,37 +49,43 @@ module Admin
                   Hanami.logger.warn "No instance for #{instance_name} (#{owner.login})"
                   next
                 else
-                  ass = @assignments.create({ student_id: owner.github_id,
-                                              homework_instance_id: instance.id,
-                                              prepare_deadline: instance.homework.prepare_deadline,
-                                              approve_deadline: instance.homework.approve_deadline,
-                                              status: 'in_progress',
-                                              url: r[:html_url],
-                                              repo: repo })
+                  ass = @assignments.create(student_id: owner.github_id,
+                                            homework_instance_id: instance.id,
+                                            prepare_deadline: instance.homework.prepare_deadline,
+                                            approve_deadline: instance.homework.approve_deadline,
+                                            status: 'in_progress',
+                                            last_update: last_update,
+                                            url: r[:html_url],
+                                            repo: repo)
                 end
               elsif ass.status == 'approved'
                 Hanami.logger.info "Assignment for #{r[:name]} is already approved"
                 next
               else
-                ass = @assignments.update(ass.id, { status: 'in_progress', url: r[:html_url], repo: repo })
+                ass = @assignments.update(ass.id, status: 'in_progress', url: r[:html_url], repo: repo, last_update: last_update)
               end
               pulls = @fetch_pulls.call(repo).pulls # sorted from newest to oldest by Github API
               last_pull = nil
               if !pulls.empty? && pulls[0][:merged_at]
                 last_pull = pulls[0]
               end
-              Hanami.logger.info "Found PRs: #{pulls.map {|p| p[:html_url]}.join}"
+              if !pulls.empty?
+                last_update = pulls[0][:created_at]
+                Hanami.logger.info "Found PRs: #{pulls.map {|p| p[:html_url]}.join}"
+              else
+                Hanami.logger.info "Not found any PRs for #{repo}"
+              end
               runs = []
               pulls.each do |pull|
                 @fetch_reviews.call(repo, pull[:number]).reviews.each do |r|
                   if @reviews.find(r[:id]).nil?
-                    @reviews.create({ id: r[:id],
-                                      assignment_id: ass.id,
-                                      teacher_id: r[:user][:id],
-                                      pull: pull[:number],
-                                      submitted_at: r[:submitted_at],
-                                      number_of_criticism: r[:body].lines.map(&:strip).count {|x| x.start_with? '- [ ] '},
-                                      url: r[:html_url] })
+                    @reviews.create(id: r[:id],
+                                    assignment_id: ass.id,
+                                    teacher_id: r[:user][:id],
+                                    pull: pull[:number],
+                                    submitted_at: r[:submitted_at],
+                                    number_of_criticism: r[:body].lines.map(&:strip).count {|x| x.start_with? '- [ ] '},
+                                    url: r[:html_url])
                   end
                 end
                 runs.push(*@fetch_commits.call(repo, pull).commits.flat_map {|c| @fetch_check_runs.call(c).check_runs})
@@ -89,16 +96,32 @@ module Admin
                 else
                   @check_runs.update(cr['id'], completed_at: cr['completed_at'])
                 end
+                completed_at = Time.parse(cr['completed_at'])
+                if last_update < completed_at
+                  last_update = completed_at
+                end
               end
               if !last_pull.nil?
                 # cannot check for 'self-merge' here, unfortunately
                 Hanami.logger.info "Last closed PR: #{last_pull[:html_url]}"
-                @assignments.update(ass.id, { status: 'approved' })
+                ass = @assignments.update(ass.id, status: 'approved', last_update: last_update)
               else
                 last_check = runs.sort_by {|cr| DateTime.parse(cr['completed_at'])}.last
                 Hanami.logger.info "Found last check run: #{last_check[:html_url]}" unless last_check.nil?
                 if !last_check.nil? && last_check['conclusion'] == 'success'
-                  @assignments.update(ass.id, { status: 'ready' })
+                  ass = @assignments.update(ass.id, status: 'ready', last_update: last_update)
+                end
+              end
+              if ass.status == 'open' || ass.status == 'in_progress'
+                now = Time.now
+                if ass.approve_deadline < now
+                  ass = @assignments.update(ass.id, status: 'failed')
+                end
+              end
+              if pulls.empty?
+                now = Time.now
+                if ass.prepare_deadline < now
+                  ass = @assignments.update(ass.id, status: 'failed')
                 end
               end
               check_protection = @check_master_protection.call(repo)
