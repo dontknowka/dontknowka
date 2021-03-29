@@ -1,10 +1,9 @@
-RSpec.describe Web::Views::Teacher::Assignments, type: :view do
-  let(:exposures) { Hash[format: :html] }
-  let(:template)  { Hanami::View::Template.new('apps/web/templates/teacher/assignments.html.erb') }
-  let(:view)      { described_class.new(template, exposures) }
-  let(:rendered)  { view.render }
+RSpec.describe Web::Controllers::Teacher::Assignments, type: :action do
+  let(:action) { described_class.new }
+  let(:params) { Hash[] }
 
-  it 'exposes #format' do
-    expect(view.format).to eq exposures.fetch(:format)
+  it 'is successful' do
+    response = action.call(params)
+    expect(response[0]).to eq 200
   end
 end
