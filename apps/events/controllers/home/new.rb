@@ -11,12 +11,14 @@ module Events
                        on_repository_deleted: OnRepositoryDeleted.new,
                        on_check_run: OnCheckRunCompleted.new,
                        on_pr_merged: OnPullRequestMerged.new,
+                       on_pr_closed: OnPullRequestClosed.new,
                        on_request_changes: OnRequestChanges.new)
           @switch = events_switch
           @on_repository_created = on_repository_created
           @on_repository_deleted = on_repository_deleted
           @on_check_run = on_check_run
           @on_pr_merged = on_pr_merged
+          @on_pr_closed = on_pr_closed
           @on_request_changes = on_request_changes
         end
 
@@ -53,6 +55,13 @@ module Events
               Hanami.logger.info "Unsuccessful 'pull request merged' event processing - #{res.comment}"
             else
               Hanami.logger.debug "Successful 'pull request merged' event processing - #{res.comment}"
+            end
+          when :close_pr
+            res = @on_pr_closed.call(params)
+            if !res.success
+              Hanami.logger.info "Unsuccessful 'pull request closed' event processing - #{res.comment}"
+            else
+              Hanami.logger.debug "Successful 'pull request closed' event processing - #{res.comment}"
             end
           when :request_changes
             res = @on_request_changes.call(params)

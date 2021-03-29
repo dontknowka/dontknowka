@@ -27,6 +27,8 @@ class EventsSwitch
       when 'closed'
         if (payload[:pull_request] || {})[:merged]
           @event = :merge_pr
+        else
+          @event = :close_pr
         end
       end
     when 'pull_request_review'
