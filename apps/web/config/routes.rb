@@ -6,6 +6,9 @@ post '/student/profile', to: 'students#profile'
 get '/student/new', to: 'students#new', as: :new_student_auth
 post '/student/new', to: 'students#new_auth'
 get '/student/score', to: 'students#score', as: :student_score
+post '/students/use_late_days', to: 'students#use_late_days', as: :use_late_days
+
+resource :assignments, only: [:update]
 
 get '/login', to: "sessions#new", as: :login
 get '/auth', to: "sessions#auth", as: :auth

@@ -13,6 +13,7 @@ module Web
         expose :profile
         expose :homeworks
         expose :total_score
+        expose :late_days
 
         def initialize(check_membership: CheckMembership.new,
                        students: StudentRepository.new,
@@ -46,6 +47,7 @@ module Web
 
           @homeworks = @get_student_homework.call(@student).list
           @total_score = @get_student_score.call(@student).total
+          @late_days = @student.late_days
         end
 
         private

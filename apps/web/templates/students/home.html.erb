@@ -1,8 +1,11 @@
 <div class="m-6">
+  <div class="m-4">
+    <p class="f6">You have <%= late_days %> late days.</p>
+  </div>
   <table style="border-collapse: separate; border-spacing: 20px;">
     <% homeworks.each do |hw| %>
       <tr>
-        <% if hw.url.nil? %>
+        <% if hw.id.nil? %>
           <td><%= hw.set %></td>
           <td></td>
           <td></td>
@@ -15,14 +18,38 @@
           <td></td>
           <td></td>
           <td></td>
+          <td></td>
+          <td></td>
         <% else %>
           <td><%= hw.type %></td>
           <td><%= hw.name %></td>
           <td><span class="Label Label--large <%= hw.colour ? ('Label--' + hw.colour) : '' %>"><%= hw.status %></span></td>
-          <td><a class="btn btn-primary my-3" role="button" href="<%= hw.url %>"><%= hw.url_title %></a></td>
+          <td>
+            <% if !hw.url.nil? %>
+              <a class="btn btn-primary my-3" role="button" href="<%= hw.url %>"><%= hw.url_title %></a>
+            <% end %>
+          </td>
           <td><span class="Label Label--green"><%= hw.worth %></span></td>
+          <td>
+            <% if !hw.days_left.nil? %>
+              <span class="text-bold <%= hw.days_left_style %>"><%= hw.days_left %></span>
+              days left
+            <% end %>
+          </td>
           <td><%= hw.prepare_before %></td>
           <td><%= hw.approve_before %></td>
+          <td>
+            <% if hw.use_late_days && late_days > 0 %>
+              <%= form_for :assignment, routes.use_late_days_path do
+                hidden_field :id, value: hw.id
+                hidden_field :name, value: hw.name
+                hidden_field :prepare_deadline, value: hw.prepare_before
+                hidden_field :approve_deadline, value: hw.approve_before
+                number_field :days, min: 1, max: late_days, step: 1, class: 'form-control'
+                submit 'Use late days', class: 'btn my-3'
+              end %>
+            <% end %>
+          </td>
         <% end %>
       </tr>
     <% end %>

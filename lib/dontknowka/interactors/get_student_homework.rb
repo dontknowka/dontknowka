@@ -26,9 +26,10 @@ class GetStudentHomework
   private
 
   class Homework
-    attr_reader :set, :type, :name, :status, :colour, :url, :url_title, :worth, :prepare_before, :approve_before
+    attr_reader :id, :set, :type, :name, :status, :colour, :url, :url_title, :worth, :prepare_before, :approve_before, :days_left, :days_left_style, :use_late_days
 
     def initialize(options)
+      @id = options[:assignment_id]
       @set = options[:homework_set_name]
       @type = options[:homework_kind] + options[:homework_number].to_s if !options[:homework_kind].nil?
       @name = options[:homework_instance_name]
@@ -43,9 +44,42 @@ class GetStudentHomework
                 when 'failed'
                   'red'
                 end
+      @days_left_style = ''
+      deadline = case options[:status] || ''
+                 when 'open'
+                   options[:prepare_deadline]
+                 when 'in_progress'
+                   options[:prepare_deadline]
+                 when 'ready'
+                   options[:approve_deadline]
+                 else
+                   nil
+                 end
+      @use_late_days = false
+      days = -1
+      if !deadline.nil?
+        days = (deadline - Time.now) / 86400
+        if days < 0
+          @days_left = 'X'
+          @days_left_style = 'text-red'
+        else
+          @days_left = days.to_i
+          @use_late_days = true
+          @days_left_style = case @days_left
+                             when proc {|n| n < 2}
+                               'text-red'
+                             when proc {|n| n < 5}
+                               'text-orange'
+                             else
+                               'text-green'
+                             end
+        end
+      end
       if options[:url].nil? || options[:url].empty?
-        @url = options[:classroom_url]
-        @url_title = 'Activate'
+        if days >= 0
+          @url = options[:classroom_url]
+          @url_title = 'Activate'
+        end
       else
         @url = options[:url]
         @url_title = 'Go to repo'

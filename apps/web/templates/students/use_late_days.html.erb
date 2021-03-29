@@ -1,0 +1,36 @@
+<div class="p-4">
+  <div class="blankslate">
+    <% if error %>
+      <p class="f3"><%= error %></p>
+      <p>
+        <a class="btn btn-primary my-3" role="button" href="<%= routes.student_path %>">Back</a>
+      </p>
+    <% else %>
+      <p class="f2">Are you sure you wish to use <span class="text-bold text-red"><%= assignment[:days] %></span> late days on your assignment <span class="text-bold text-orange"><%= assignment[:name] %></span>?</p>
+      <% if !new_prepare.nil? %>
+        <p class="f4">
+        Prepare deadline: <span class="text-yellow"><%= old_prepare %></span>
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="vertical-align: -0.125em;-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M13.293 7.293a.999.999 0 0 0 0 1.414L15.586 11H8a1 1 0 0 0 0 2h7.586l-2.293 2.293a.999.999 0 1 0 1.414 1.414L19.414 12l-4.707-4.707a.999.999 0 0 0-1.414 0z" fill="#626262"/></svg>
+          <span class="text-green"><%= new_prepare %></span>
+        </p>
+      <% end %>
+      <% if !new_approve.nil? %>
+        <p class="f4">
+        Approve deadline: <span class="text-yellow"><%= old_approve %></span>
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="vertical-align: -0.125em;-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M13.293 7.293a.999.999 0 0 0 0 1.414L15.586 11H8a1 1 0 0 0 0 2h7.586l-2.293 2.293a.999.999 0 1 0 1.414 1.414L19.414 12l-4.707-4.707a.999.999 0 0 0-1.414 0z" fill="#626262"/></svg>
+          <span class="text-green"><%= new_approve %></span>
+        </p>
+      <% end %>
+      <p>
+      <%= form_for :assignment, routes.assignment_path(id: assignment[:id]), method: :patch do
+        hidden_field :id
+        hidden_field :days
+        submit 'OK', class: 'btn btn-primary my-3'
+        a class: 'btn', role: 'button', href: routes.student_path do
+          "Cancel"
+        end
+      end %>
+      </p>
+    <% end %>
+  </div>
+</div>
