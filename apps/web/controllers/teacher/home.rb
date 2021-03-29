@@ -93,7 +93,7 @@ module Web
             @url = data[:url]
             @repo_url = data[:repo_url]
             if !data[:updated_at].nil?
-              @updated_at = Time.parse(data[:updated_at]).strftime("%d.%m.%Y %H:%M:%S")
+              @updated_at = (data[:updated_at].is_a?(Time) ? data[:updated_at] : Time.parse(data[:updated_at])).strftime("%d.%m.%Y %H:%M:%S")
             end
           end
         end
