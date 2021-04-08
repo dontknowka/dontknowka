@@ -29,21 +29,21 @@ module Events
           when :create_repository
             res = @on_repository_created.call(params)
             if !res.success
-              Hanami.logger.info "Unsuccessful 'repository created' event processing - #{res.comment}"
+              Hanami.logger.warn "Unsuccessful 'repository created' event processing - #{res.comment}"
             else
               Hanami.logger.debug "Successful 'repository created' event processing - #{res.comment}"
             end
           when :delete_repository
             res = @on_repository_deleted.call(params)
             if !res.success
-              Hanami.logger.info "Unsuccessful 'repository deleted' event processing - #{res.comment}"
+              Hanami.logger.warn "Unsuccessful 'repository deleted' event processing - #{res.comment}"
             else
               Hanami.logger.debug "Successful 'repository deleted' event processing - #{res.comment}"
             end
           when :check_run
             res = @on_check_run.call(params)
             if !res.success
-              Hanami.logger.info "Unsuccessful 'check run completed' event processing - #{res.comment}"
+              Hanami.logger.warn "Unsuccessful 'check run completed' event processing - #{res.comment}"
             else
               Hanami.logger.debug "Successful 'check run completed' event processing - #{res.comment}"
             end
@@ -52,21 +52,21 @@ module Events
           when :merge_pr
             res = @on_pr_merged.call(params)
             if !res.success
-              Hanami.logger.info "Unsuccessful 'pull request merged' event processing - #{res.comment}"
+              Hanami.logger.warn "Unsuccessful 'pull request merged' event processing - #{res.comment}"
             else
               Hanami.logger.debug "Successful 'pull request merged' event processing - #{res.comment}"
             end
           when :close_pr
             res = @on_pr_closed.call(params)
             if !res.success
-              Hanami.logger.info "Unsuccessful 'pull request closed' event processing - #{res.comment}"
+              Hanami.logger.warn "Unsuccessful 'pull request closed' event processing - #{res.comment}"
             else
               Hanami.logger.debug "Successful 'pull request closed' event processing - #{res.comment}"
             end
           when :request_changes
             res = @on_request_changes.call(params)
             if !res.success
-              Hanami.logger.info "Unsuccessful 'changes requested' event processing - #{res.comment}"
+              Hanami.logger.warn "Unsuccessful 'changes requested' event processing - #{res.comment}"
             else
               Hanami.logger.debug "Successful 'changes requested' event processing - #{res.comment}"
             end

@@ -13,9 +13,17 @@ class InitializeRepo
   end
 
   def call(team_id, team_slug, repo)
-    @add_team_repo.call(team_id, repo)
-    @protect_branch.call(repo, [], [team_slug])
-    @success = true
-    @comment = ''
+    if @add_team_repo.call(team_id, repo).valid
+      if @protect_branch.call(repo, [], [team_slug]).valid
+        @success = true
+        @comment = ''
+      else
+        @success = false
+        @comment = 'Protect branch failed'
+      end
+    else
+      @success = false
+      @comment = 'Add team to repo failed'
+    end
   end
 end

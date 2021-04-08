@@ -107,7 +107,7 @@ module Admin
                 ass = @assignments.update(ass.id, status: 'approved', last_update: last_update)
               else
                 last_check = runs.sort_by {|cr| DateTime.parse(cr['completed_at'])}.last
-                Hanami.logger.info "Found last check run: #{last_check[:html_url]}" unless last_check.nil?
+                Hanami.logger.info "Found last check run: #{last_check['html_url']}" unless last_check.nil?
                 if !last_check.nil? && last_check['conclusion'] == 'success'
                   ass = @assignments.update(ass.id, status: 'ready', last_update: last_update)
                 end
