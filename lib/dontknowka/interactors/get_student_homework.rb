@@ -14,11 +14,11 @@ class GetStudentHomework
   def call(student)
     ass = @assignments.with_sets(student)
     @list = @homework_sets.all_set_names.flat_map do |set|
-      a = ass.detect { |a| a[:homework_set_name] == set }
-      if a.nil?
+      a = ass.filter {|a| a[:homework_set_name] == set}
+      if a.empty?
         Homework.new(homework_set_name: set)
       else
-        Homework.new(a)
+        a.map {|x| Homework.new(x)}
       end
     end
   end
@@ -77,7 +77,9 @@ class GetStudentHomework
       end
       if options[:url].nil? || options[:url].empty?
         if days >= 0
-          @url = options[:classroom_url]
+          if !options[:classroom_url].nil? && !options[:classroom_url].empty?
+            @url = options[:classroom_url]
+          end
           @url_title = 'Activate'
         end
       else

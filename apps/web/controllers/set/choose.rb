@@ -23,21 +23,19 @@ module Web
         def call(params)
           name = params[:set][:name] || ''
           halt 404 if name.empty?
-          instances = @homework_sets.get_instances(name)
-          halt 404 if instances.empty?
-          n = @round_robin.call("assignment:#{name}", instances.length).value
-          chosen = instances[n-1]
-          Hanami.logger.debug "Activating #{chosen.homework_instance.name} at #{chosen.homework_instance.classroom_url}"
-          ass = @assignments.by_instance(session[:github_id], chosen.homework_instance.id)
-          if ass.empty?
-            hw = @homeworks.find(chosen.homework_instance.homework_id)
-            halt 404 if hw.nil?
-            @assignments.create({ student_id: session[:github_id],
-                                  homework_instance_id: chosen.homework_instance.id,
-                                  prepare_deadline: hw.prepare_deadline,
-                                  approve_deadline: hw.approve_deadline,
+          variants = @homework_sets.get_variants(name)
+          halt 404 if variants.empty?
+          n = @round_robin.call("assignment:#{name}", variants.length).value
+          variants[n-1].each do |chosen|
+            ass = @assignments.by_instance(session[:github_id], chosen[:homework_instance_id])
+            if ass.empty?
+              @assignments.create(student_id: session[:github_id],
+                                  homework_instance_id: chosen[:homework_instance_id],
+                                  prepare_deadline: chosen[:prepare_deadline],
+                                  approve_deadline: chosen[:approve_deadline],
                                   url: '',
-                                  repo: "#{chosen.homework_instance.name.strip}-#{session[:login]}" })
+                                  repo: "#{chosen[:homework_instance_name].strip}-#{session[:login]}")
+            end
           end
           redirect_to routes.student_path
         end

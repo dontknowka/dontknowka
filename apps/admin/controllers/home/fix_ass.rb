@@ -90,6 +90,11 @@ module Admin
                 end
                 runs.push(*@fetch_commits.call(repo, pull).commits.flat_map {|c| @fetch_check_runs.call(c).check_runs})
               end
+              if runs.empty?
+                Hanami.logger.info "Not found any check runs for #{repo}"
+              else
+                Hanami.logger.info "Found check runs: #{runs.map {|cr| "#{cr['id']} at #{cr['completed_at']}"}.join}"
+              end
               runs.each do |cr|
                 if @check_runs.find(cr['id']).nil?
                   @check_runs.create(id: cr['id'], assignment_id: ass.id, url: cr['html_url'], completed_at: cr['completed_at'])

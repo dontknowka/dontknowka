@@ -12,10 +12,11 @@ class HomeworkSetRepository < Hanami::Repository
       .uniq
   end
 
-  def get_instances(name)
-    aggregate(:homework_instance)
-      .where(name: name)
-      .map_to(HomeworkSet)
+  def get_variants(name)
+    homework_sets.read("SELECT homeworks.id AS homework_id, homework_instances.id AS homework_instance_id, homework_instances.name AS homework_instance_name, homework_sets.name AS homework_set_name, homework_sets.variant_id, homeworks.prepare_deadline, homeworks.approve_deadline FROM homeworks INNER JOIN homework_instances ON (homeworks.id = homework_instances.homework_id) INNER JOIN homework_sets ON (homework_instances.id = homework_sets.homework_instance_id AND homework_sets.name = '#{name}') ORDER BY homework_sets.name, homework_sets.variant_id, homeworks.prepare_deadline")
+      .map
       .to_a
+      .group_by {|x| x[:variant_id]}
+      .values
   end
 end
