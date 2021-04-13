@@ -11,17 +11,23 @@ class OnRepositoryDeleted
   end
 
   def call(payload)
-    repo = payload[:repository]
-    @success = false
-    @comment = 'All attempts to delete assignment failed'
-    5.times do
-      begin
-        res = @delete_assignment.call(repo[:name])
-        @success = res.success
-        @comment = res.comment
-        break
-      rescue => e
-        Hanami.logger.info "Failed attempt to delete assignment: #{e.to_s}"
+    sender = payload[:sender]
+    if sender[:type] != 'Bot' || !sender[:login].include?('classroom')
+      @success = true
+      @comment = 'Uninteresting'
+    else
+      repo = payload[:repository]
+      @success = false
+      @comment = 'All attempts to delete assignment failed'
+      5.times do
+        begin
+          res = @delete_assignment.call(repo[:name])
+          @success = res.success
+          @comment = res.comment
+          break
+        rescue => e
+          Hanami.logger.info "Failed attempt to delete assignment: #{e.to_s}"
+        end
       end
     end
   end
