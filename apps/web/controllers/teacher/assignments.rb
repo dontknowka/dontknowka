@@ -64,8 +64,9 @@ module Web
 
           def initialize(data)
             @name = data[:name]
-            @status = (data[:status] || '').capitalize.gsub('_', ' ')
-            @status_style = case @status
+            status = (data[:status] || '')
+            @status = status.capitalize.gsub('_', ' ')
+            @status_style = case status
                             when 'ready'
                               'Label--pink'
                             when 'in_progress'
