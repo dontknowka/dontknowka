@@ -8,11 +8,12 @@
         <th>Student</th>
         <th>Open PR</th>
         <th>Repository</th>
+        <th>Deadline</th>
       </tr>
       <% awaiting.each do |a| %>
         <tr>
           <td><%= a.name %></td>
-          <td><span class="text-bold <%= a.deadline_style %>"><%= a.deadline %></span></td>
+          <td><span class="text-bold <%= a.days_left_style %>"><%= a.days_left %></span></td>
           <td><%= a.login %></td>
           <td>
             <% if !a.url.nil? %>
@@ -22,6 +23,7 @@
           <td>
             <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
           </td>
+          <td><%= a.deadline %></td>
         </tr>
       <% end %>
     </table>
@@ -36,11 +38,12 @@
         <th>Last update</th>
         <th>Open PR</th>
         <th>Repository</th>
+        <th>Deadline</th>
       </tr>
       <% updated.each do |a| %>
         <tr>
           <td><%= a.name %></td>
-          <td><span class="text-bold <%= a.deadline_style %>"><%= a.deadline %></span></td>
+          <td><span class="text-bold <%= a.days_left_style %>"><%= a.days_left %></span></td>
           <td><%= a.login %></td>
           <td><%= a.updated_at %></td>
           <td>
@@ -51,6 +54,7 @@
           <td>
             <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
           </td>
+          <td><%= a.deadline %></td>
         </tr>
       <% end %>
     </table>
@@ -63,6 +67,7 @@
         <th>Student</th>
         <th>Open PR</th>
         <th>Repository</th>
+        <th>Deadline</th>
       </tr>
       <% expired.each do |a| %>
         <tr>
@@ -76,6 +81,7 @@
           <td>
             <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
           </td>
+          <td><%= a.deadline %></td>
         </tr>
       <% end %>
     </table>

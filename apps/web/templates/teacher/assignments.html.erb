@@ -8,12 +8,13 @@
       <th>Last update</th>
       <th>Open PR</th>
       <th>Repository</th>
+      <th>Deadline</th>
     </tr>
     <% not_approved.each do |a| %>
       <tr>
         <td><%= a.name %></td>
         <td><span class="Label <%= a.status_style %>"><%= a.status %></span></td>
-        <td><span class="text-bold <%= a.deadline_style %>"><%= a.deadline %></span></td>
+        <td><span class="text-bold <%= a.days_left_style %>"><%= a.days_left %></span></td>
         <td><%= a.login %></td>
         <td><%= a.updated_at %></td>
         <td>
@@ -24,6 +25,7 @@
         <td>
           <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
         </td>
+        <td><%= a.deadline %></td>
       </tr>
     <% end %>
   </table>
