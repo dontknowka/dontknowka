@@ -23,7 +23,7 @@ class ReviewCreator
       n = text
         .lines
         .map(&:strip)
-        .count {|x| x.start_with? '- [ ] '}
+        .count {|x| x.start_with? '- [ ] ', '- [] '}
       @reviews.create({ id: id,
                         assignment_id: a.id,
                         teacher_id: teacher_id,

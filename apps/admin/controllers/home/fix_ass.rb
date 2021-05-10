@@ -84,7 +84,7 @@ module Admin
                                     teacher_id: r[:user][:id],
                                     pull: pull[:number],
                                     submitted_at: r[:submitted_at],
-                                    number_of_criticism: r[:body].lines.map(&:strip).count {|x| x.start_with? '- [ ] '},
+                                    number_of_criticism: r[:body].lines.map(&:strip).count {|x| x.start_with? '- [ ] ', '- [] '},
                                     url: r[:html_url])
                   end
                 end
