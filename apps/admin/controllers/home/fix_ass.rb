@@ -154,6 +154,7 @@ module Admin
             else
               Hanami.logger.info "Not found an owner for repository #{repo}"
             end
+            sleep 30
           end
           redirect_to routes.root_path
         end

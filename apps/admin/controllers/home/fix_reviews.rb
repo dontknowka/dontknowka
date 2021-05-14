@@ -50,6 +50,7 @@ module Admin
                 end
               end
             end
+            sleep 30
           end
           redirect_to routes.root_path
         end
