@@ -53,7 +53,7 @@ class AssignmentRepository < Hanami::Repository
     if instances.empty?
       []
     else
-      assignments.read("SELECT assignments.id, assignments.status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) LEFT JOIN reviews ON (assignments.id = reviews.assignment_id) WHERE assignments.status = 'ready' AND reviews.assignment_id IS NULL ORDER BY assignments.created_at, approve_deadline")
+      assignments.read("SELECT assignments.id, assignments.status, homework_instances.name AS name, approve_deadline, assignments.repo AS repo, assignments.url AS repo_url, students.login AS login FROM homework_instances INNER JOIN assignments ON (homework_instances.id = assignments.homework_instance_id AND homework_instances.id IN (#{instances.join(',')})) INNER JOIN students ON (assignments.student_id = students.id) LEFT JOIN reviews ON (assignments.id = reviews.assignment_id) WHERE assignments.status = 'ready' AND reviews.assignment_id IS NULL ORDER BY approve_deadline, assignments.last_update")
         .map
         .to_a
     end
