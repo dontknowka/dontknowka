@@ -14,6 +14,7 @@ module Web
         expose :awaiting
         expose :updated
         expose :expired
+        expose :failed
 
         def initialize(fetch_pull_requests: FetchPullRequests.new,
                        check_membership: CheckMembership.new,
@@ -55,6 +56,9 @@ module Web
           @expired = @assignments
             .expired(instances, Time.now)
             .map {|a| Assignment.new(a.merge({url: last_pr_url(a[:repo])}))}
+          @failed = @assignments
+            .failed(instances)
+            .map {|a| Assignment.new(a.merge({url: last_pr_url(a[:repo])}))}
         end
 
         private
@@ -77,7 +81,7 @@ module Web
 
           def initialize(data)
             @name = data[:name]
-            deadline = data[:approve_deadline]
+            deadline = data[:approve_deadline] || Time.now
             @days_left = ((deadline - Time.now) / 86400).to_i
             if @days_left < 0
               @days_left = 0

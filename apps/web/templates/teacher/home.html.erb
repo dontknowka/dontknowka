@@ -86,4 +86,29 @@
       <% end %>
     </table>
   </div>
+  <div class="m-4">
+    <p class="h3">Failed</p>
+    <table style="border-collapse: separate; border-spacing: 20px;">
+      <tr>
+        <th>Name</th>
+        <th>Student</th>
+        <th>Open PR</th>
+        <th>Repository</th>
+      </tr>
+      <% failed.each do |a| %>
+        <tr>
+          <td><%= a.name %></td>
+          <td><%= a.login %></td>
+          <td>
+            <% if !a.url.nil? %>
+              <a class="btn btn-primary" role="button" href="<%= a.url %>" target="_blank" rel="noopener noreferrer">Go to PR</a>
+            <% end %>
+          </td>
+          <td>
+            <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
 </div>
