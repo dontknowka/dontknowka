@@ -60,7 +60,7 @@ module Web
         end
 
         class Assignment
-          attr_reader :name, :status, :status_style, :deadline, :days_left, :days_left_style, :login, :url, :repo_url, :updated_at
+          attr_reader :name, :status, :status_style, :prepare_deadline, :approve_deadline, :days_left, :days_left_style, :login, :url, :repo_url, :updated_at
 
           def initialize(data)
             @name = data[:name]
@@ -74,8 +74,8 @@ module Web
                             when 'failed'
                               'Label--red'
                             end
-            deadline = data[:approve_deadline]
-            @days_left = ((deadline - Time.now) / 86400).to_i
+            approve_deadline = data[:approve_deadline] || (Time.now - 86400 * 100)
+            @days_left = ((approve_deadline - Time.now) / 86400).to_i
             if @days_left < 0
               @days_left = 0
             end
@@ -87,7 +87,11 @@ module Web
                               else
                                 'text-green'
                               end
-            @deadline = deadline.strftime("%d.%m.%Y %H:%M:%S")
+            @approve_deadline = approve_deadline.strftime("%d.%m.%Y %H:%M:%S")
+            @prepare_deadline = ''
+            if data[:prepare_deadline]
+              @prepare_deadline = data[:prepare_deadline].strftime("%d.%m.%Y %H:%M:%S")
+            end
             @login = data[:login]
             @url = data[:url]
             @repo_url = data[:repo_url]

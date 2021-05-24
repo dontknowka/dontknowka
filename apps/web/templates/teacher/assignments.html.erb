@@ -8,7 +8,8 @@
       <th>Last update</th>
       <th>Open PR</th>
       <th>Repository</th>
-      <th>Deadline</th>
+      <th>Approve Deadline</th>
+      <th>Prepare Deadline</th>
     </tr>
     <% not_approved.each do |a| %>
       <tr>
@@ -25,7 +26,8 @@
         <td>
           <a class="btn" role="button" href="<%= a.repo_url %>" target="_blank" rel="noopener noreferrer">Go to repo</a>
         </td>
-        <td><%= a.deadline %></td>
+        <td><%= a.approve_deadline %></td>
+        <td><%= a.prepare_deadline %></td>
       </tr>
     <% end %>
   </table>
