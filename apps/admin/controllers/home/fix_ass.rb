@@ -58,8 +58,8 @@ module Admin
                                             url: r[:html_url],
                                             repo: repo)
                 end
-              elsif ass.status == 'approved'
-                Hanami.logger.info "Assignment for #{r[:name]} is already approved"
+              elsif ass.status == 'approved' || ass.status == 'failed'
+                Hanami.logger.info "Assignment for #{r[:name]} is already approved or failed"
                 next
               else
                 ass = @assignments.update(ass.id, status: 'in_progress', url: r[:html_url], repo: repo, last_update: last_update)
