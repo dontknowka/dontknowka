@@ -4,6 +4,7 @@ module Admin
       class Index
         include Admin::Action
 
+        expose :homeworks
         expose :team_mapping
 
         def initialize(get_teams: GetTeams.new,
@@ -14,6 +15,7 @@ module Admin
 
         def call(params)
           @team_mapping = TeamMapping.new(@homework_instances.all, @get_teams.call.teams)
+          @homeworks = @homework_instances.all.reduce(Hash[]) {|h, w| h.merge({w.name => w.id}) }
         end
 
         private

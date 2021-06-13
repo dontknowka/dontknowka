@@ -29,6 +29,13 @@ class AssignmentRepository < Hanami::Repository
       .to_a
   end
 
+  def all_by_instance(id)
+    assignments
+      .where(homework_instance_id: id)
+      .map_to(Assignment)
+      .to_a
+  end
+
   def by_repo(repo_name)
     assignments
       .where { repo.ilike("%#{repo_name}") }

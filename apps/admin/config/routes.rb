@@ -7,6 +7,7 @@ get '/fix_reviews', to: 'home#fix_reviews', as: :fix_reviews
 post '/add_team_to_repos', to: 'home#add_team_to_repos', as: :add_team_to_repos
 post '/add_team_to_reviewers', to: 'home#add_team_to_reviewers', as: :add_team_to_reviewers
 post '/create_teacher', to: 'home#create_teacher', as: :create_teacher
+post '/collect_interviews', to: 'home#collect_interviews', as: :collect_interviews
 
 post '/test', to: 'home#test'
 

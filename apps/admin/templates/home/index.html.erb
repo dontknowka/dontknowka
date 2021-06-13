@@ -37,4 +37,14 @@
       end
     %>
   </div>
+  <div class="p-3">
+    <%=
+      form_for :homework, routes.collect_interviews_path do
+        div do
+          select :homework_instance_id, homeworks, options: { promt: 'Select a homework' }, class: 'form-control'
+          submit :Collect, class: 'btn'
+        end
+      end
+    %>
+  </div>
 </div>
