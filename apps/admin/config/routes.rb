@@ -20,6 +20,7 @@ resources :teams, only: [:index, :create, :destroy]
 resources :teacher_mappings, only: [:index, :create, :destroy]
 resources :team_mappings, only: [:index, :create, :destroy]
 resources :bonuses, only: [:index, :create, :update, :destroy]
+resources :competitions, only: [:index, :create]
 get '/teachers/populate', to: 'teachers#populate', as: :populate_teachers
 get '/teams/populate', to: 'teams#populate', as: :populate_teams
 

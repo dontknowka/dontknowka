@@ -1,0 +1,33 @@
+<div class="p-6">
+  <div class="TableObject p-4">
+    <%= form_for :competition, routes.competitions_path, method: :post do
+      div class: 'TableObject-item p-2' do
+        select :student_id, students, options: { promt: 'Select a student' }, class: 'form-select'
+      end
+      div class: 'TableObject-item p-2' do
+        select :homework_instance_id, i_mapping, options: { promt: 'Select an HW instance' }, class: 'form-select'
+      end
+      div class: 'TableObject-item p-2' do
+        text_area :data, class: 'form-control'
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'New', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
+  <% competitions.each do |c| %>
+    <div class="TableObject p-4">
+      <div class="TableObject-item TableObject-item--primary pr-2">
+        <span><%= c.student_name %></span>
+      </div>
+      <div class="TableObject-item">
+        <span><%= i_rmapping[c.homework_instance_id] %></span>
+      </div>
+      <% c.scores.each do |s| %>
+        <div class="TableObject-item">
+          <span><% s %></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
