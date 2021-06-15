@@ -23,6 +23,10 @@ class FetchComments
       @success = false
       @comment = "Not found pull requests for #{repo_name}"
       @comments = []
+    rescue Octokit::InvalidRepository
+      @success = false
+      @comment = "Not found repository #{repo_name}"
+      @comments = []
     end
   end
 end
