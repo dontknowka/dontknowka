@@ -43,7 +43,7 @@ class GetStudentScore
                   'red'
                 end
       @check_runs = a.check_runs.size
-      @check_malus = @check_runs / 7
+      @check_malus = @check_runs / 15
       @reviews = a.reviews.sort_by {|r| r.submitted_at}
       @review_malus = @reviews.size + @reviews.drop(1).reduce(0) {|acc, r| acc + [r.number_of_criticism - 1, 0].max}
       @interview_malus = 0
