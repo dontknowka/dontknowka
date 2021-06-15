@@ -60,7 +60,7 @@ class FetchInterviews
       else
         @success = res.success
         @comment = res.comment
-        break
+        Hanami.logger.warn "Failed to fetch comments for #{ass.repo}"
       end
     end
   end
