@@ -24,7 +24,6 @@ module Admin
             .map {|id, items| CompetitionInfo.new(id, items)}
           @students = @student_repo
             .all
-            #.map {|x| StudentInfo.new(x)}
             .reduce(Hash[]) {|h, s| h.merge({s.login => s.id})}
             .sort {|a, b| a[0] <=> b[0]}
           instances = @instance_repo.all
