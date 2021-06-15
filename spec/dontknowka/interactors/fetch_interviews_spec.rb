@@ -1,6 +1,6 @@
 require 'ostruct'
 
-RSpec.describe CollectInterviews do
+RSpec.describe FetchInterviews do
   let(:repo_first) { 'our-org/some-repo-first' }
   let(:repo_second) { 'our-org/some-repo-second' }
   let(:assignments) { instance_double('AssignmentRepository') }

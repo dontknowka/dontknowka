@@ -25,7 +25,7 @@ class GetStudentScore
   private
 
   class AssignmentScore
-    attr_reader :worth, :url, :name, :status, :colour, :check_runs, :check_malus, :reviews, :review_malus, :total_malus, :score
+    attr_reader :worth, :url, :name, :status, :colour, :check_runs, :check_malus, :reviews, :review_malus, :interview_malus, :total_malus, :bench_bonus, :score
 
     def initialize(a)
       @worth = a.homework_instance.worth
@@ -46,8 +46,40 @@ class GetStudentScore
       @check_malus = @check_runs / 7
       @reviews = a.reviews.sort_by {|r| r.submitted_at}
       @review_malus = @reviews.size + @reviews.drop(1).reduce(0) {|acc, r| acc + [r.number_of_criticism - 1, 0].max}
-      @total_malus = @check_malus + @review_malus
+      @interview_malus = 0
+      if a.interview
+        @interview_malus = a.interview.malus
+      end
+      @total_malus = @check_malus + @review_malus - @interview_malus
       @score = @worth > @total_malus ? @worth - @total_malus : 0
+      competition_worth = [@worth, 25].min
+      competition_score = competition_worth > @total_malus ? competition_worth - @total_malus : 0
+      @bench_bonus = 0
+      if a.competitions && a.competitions.size > 0
+        part = [(competition_score * 1.0) / a.competitions.size, 1.0].max
+        bonus = a.competitions.reduce(0) do |acc, c|
+          acc += case c.score
+                 when 95
+                   part * 2
+                 when 90
+                   part * 1.5
+                 when 85
+                   part
+                 when 80
+                   part * 0.7
+                 when 75
+                   part * 0.5
+                 when 70
+                   part * 0.3
+                 when 65
+                   part * 0.1
+                 else
+                   0
+                 end
+        end
+        @bench_bonus = Integer(bonus)
+      end
+      @score += @bench_bonus
     end
   end
 end

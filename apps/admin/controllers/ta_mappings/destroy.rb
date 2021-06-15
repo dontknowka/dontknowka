@@ -4,7 +4,7 @@ module Admin
       class Destroy
         include Admin::Action
 
-        def initialize(tms: TeamMappingRepository.new)
+        def initialize(team_mapping_repo: TeamMappingRepository.new)
           @team_mapping_repo = team_mapping_repo
         end
 

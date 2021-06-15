@@ -6,6 +6,8 @@ class AssignmentRepository < Hanami::Repository
     belongs_to :student
     has_many :reviews
     has_many :check_runs
+    has_one :interview
+    has_many :competitions
   end
 
   def by_student(student)
@@ -50,7 +52,7 @@ class AssignmentRepository < Hanami::Repository
   end
 
   def with_reviews(student)
-    aggregate(:homework_instance, :reviews, :check_runs)
+    aggregate(:homework_instance, :reviews, :check_runs, :interview, :competitions)
       .where(student_id: student.id)
       .map_to(Assignment)
       .to_a

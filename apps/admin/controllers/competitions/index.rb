@@ -24,8 +24,9 @@ module Admin
             .map {|id, items| CompetitionInfo.new(id, items)}
           @students = @student_repo
             .all
-            .map {|x| StudentInfo.new(x)}
-            .reduce(Hash[]) {|h, s| h.merge({s.name => s.id})}
+            #.map {|x| StudentInfo.new(x)}
+            .reduce(Hash[]) {|h, s| h.merge({s.login => s.id})}
+            .sort {|a, b| a[0] <=> b[0]}
           instances = @instance_repo.all
           @i_mapping = instances.map {|i| [i.name, i.id]}.to_h
           @i_rmapping = instances.map {|i| [i.id, i.name]}.to_h
@@ -46,9 +47,10 @@ module Admin
         end
 
         class CompetitionInfo
-          attr_reader :student_name, :homework_instance_id, :scores
+          attr_reader :assignment_id, :student_name, :homework_instance_id, :scores
 
           def initialize(id, items)
+            @assignment_id = id
             @student_name = items.first[:login]
             @homework_instance_id = items.first[:homework_instance_id]
             @scores = items.map {|o| o[:score]}

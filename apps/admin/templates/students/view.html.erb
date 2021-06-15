@@ -7,6 +7,8 @@
       <th>Checks</th>
       <th>Reviews</th>
       <th>Malus</th>
+      <th>Interview</th>
+      <th>Competition</th>
       <th>Score</th>
       <th></th>
     </tr>
@@ -18,6 +20,8 @@
         <td><span class="Label Label--large Label--yellow"><%= a.check_runs %></span></td>
         <td><span class="Label Label--large Label--orange"><%= a.reviews.size %></span></td>
         <td><span class="Label Label--large Label--red"><%= a.review_malus %></span></td>
+        <td><span class="Label Label--large Label--red"><%= a.interview_malus %></span></td>
+        <td><span class="Label Label--large Label--green"><%= a.bench_bonus %></span></td>
         <td><span class="Label Label--large Label--pink"><%= a.score %></span></td>
         <td><a class="btn btn-primary my-3" role="button" href="<%= a.url %>">Go to repo</a></td>
       </tr>

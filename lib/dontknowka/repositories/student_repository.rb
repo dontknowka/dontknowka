@@ -5,4 +5,12 @@ class StudentRepository < Hanami::Repository
       .map_to(Student)
       .to_a
   end
+
+  def by_login(login)
+    students
+      .where(login: login)
+      .map_to(Student)
+      .to_a
+      .first
+  end
 end

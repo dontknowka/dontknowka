@@ -1,6 +1,6 @@
 require 'hanami/interactor'
 
-class CollectInterviews
+class FetchInterviews
   include Hanami::Interactor
 
   expose :success

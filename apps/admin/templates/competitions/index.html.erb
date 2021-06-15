@@ -1,5 +1,18 @@
 <div class="p-6">
   <div class="TableObject p-4">
+    <%= form_for :bulk, routes.competitions_path, method: :post, enctype: 'multipart/form-data' do
+      div class: 'TableObject-item p-2' do
+        file_field :table, class: 'form-control', accept: 'text/csv'
+      end
+      div class: 'TableObject-item p-2' do
+        select :homework_instance_id, i_mapping, options: { promt: 'Select an HW instance' }, class: 'form-select'
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'Upload', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
+  <div class="TableObject p-4">
     <%= form_for :competition, routes.competitions_path, method: :post do
       div class: 'TableObject-item p-2' do
         select :student_id, students, options: { promt: 'Select a student' }, class: 'form-select'
@@ -20,14 +33,21 @@
       <div class="TableObject-item TableObject-item--primary pr-2">
         <span><%= c.student_name %></span>
       </div>
-      <div class="TableObject-item">
+      <div class="TableObject-item pr-4">
         <span><%= i_rmapping[c.homework_instance_id] %></span>
       </div>
       <% c.scores.each do |s| %>
-        <div class="TableObject-item">
-          <span><% s %></span>
+        <div class="TableObject-item pr-2">
+          <span><%= s %></span>
         </div>
       <% end %>
+      <div class="TableObject-item pl-2">
+        <%= form_for :bonus, routes.competition_path(c.assignment_id), method: :delete do
+          div class: 'form-actions' do
+            submit 'Delete', class: 'btn btn-danger'
+          end
+        end %>
+      </div>
     </div>
   <% end %>
 </div>
