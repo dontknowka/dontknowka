@@ -20,19 +20,24 @@ class ReviewCreator
       @comment = 'No associated assignment'
     when 1
       a = ass[0]
-      n = text
-        .lines
-        .map(&:strip)
-        .count {|x| x.start_with? '- [ ] ', '- [] '}
-      @reviews.create({ id: id,
-                        assignment_id: a.id,
-                        teacher_id: teacher_id,
-                        pull: pull,
-                        submitted_at: submitted_at,
-                        number_of_criticism: n,
-                        url: url })
-      @success = true
-      @comment = ''
+      if a.status != 'approved' && a.status != 'failed'
+        n = text
+          .lines
+          .map(&:strip)
+          .count {|x| x.start_with? '- [ ] ', '- [] '}
+        @reviews.create({ id: id,
+                          assignment_id: a.id,
+                          teacher_id: teacher_id,
+                          pull: pull,
+                          submitted_at: submitted_at,
+                          number_of_criticism: n,
+                          url: url })
+        @success = true
+        @comment = ''
+      else
+        @success = true
+        @comment = 'Not relevant for this assignment status'
+      end
     else
       @success = false
       @comment = 'Several matching assignments'
