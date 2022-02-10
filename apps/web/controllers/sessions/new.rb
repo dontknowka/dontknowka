@@ -16,6 +16,11 @@ module Web
           @secret = @secret_gen.call().secret
           session[:auth_secret] = @secret
         end
+
+        private
+
+        def authenticate?
+        end
       end
     end
   end

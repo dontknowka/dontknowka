@@ -14,8 +14,9 @@ module Admin
         end
 
         def call(params)
-          @team_mapping = TeamMapping.new(@homework_instances.all, @get_teams.call.teams)
-          @homeworks = @homework_instances.all.reduce(Hash[]) {|h, w| h.merge({w.name => w.id}) }
+          all_instances = @homework_instances.all
+          @team_mapping = TeamMapping.new(all_instances, @get_teams.call.teams)
+          @homeworks = all_instances.reduce(Hash[]) {|h, w| h.merge({w.name => w.id}) }
         end
 
         private

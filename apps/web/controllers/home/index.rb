@@ -4,8 +4,6 @@ module Web
       class Index
         include Web::Action
 
-        before :authenticate?
-
         def initialize(fetch_user: FetchUser.new, get_user_role: GetUserRole.new)
           @fetch_user = fetch_user
           @get_user_role = get_user_role
@@ -32,16 +30,6 @@ module Web
             session[:access_token] = nil
             authenticate!
           end
-        end
-
-        private
-
-        def authenticate?
-          authenticate! if session[:access_token].nil?
-        end
-
-        def authenticate!
-          redirect_to routes.login_path
         end
       end
     end

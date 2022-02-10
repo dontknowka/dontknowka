@@ -36,7 +36,7 @@ module Web
                 Hanami.logger.warn "No such student: #{assignment.student_id}"
               end
             else
-              Hanami.logger.warn "No such assignment: #{id}"
+              Hanami.logger.warn "No such assignment: #{id}" if Hanami.logger
             end
           end
           redirect_to routes.student_path

@@ -1,6 +1,8 @@
 require 'hanami/helpers'
 require 'hanami/assets'
 
+require_relative './controllers/authentication'
+
 module Web
   class Application < Hanami::Application
     configure do
@@ -81,7 +83,8 @@ module Web
       #
       # See: http://www.rubydoc.info/gems/rack/Rack/Session/Cookie
       #
-      sessions :redis, { secret: ENV['WEB_SESSIONS_SECRET'], redis_server: ENV['REDIS_URL'] }
+      # expire after 1209600 seconds = 14 days
+      sessions :redis, { secret: ENV['WEB_SESSIONS_SECRET'], redis_server: ENV['REDIS_URL'], expire_after: 1209600 }
 
       # Configure Rack middleware for this application
       #
@@ -246,6 +249,7 @@ module Web
       #
       # See: http://www.rubydoc.info/gems/hanami-controller#Configuration
       controller.prepare do
+        include Web::Authentication
         # include MyAuthentication # included in all the actions
         # before :authenticate!    # run an authentication before callback
       end

@@ -4,8 +4,6 @@ module Web
       class Favorites
         include Web::Action
 
-        before :authenticate?
-
         expose :login
         expose :avatar
 
@@ -49,14 +47,6 @@ module Web
         end
 
         private
-
-        def authenticate?
-          authenticate! if session[:github_id].nil?
-        end
-
-        def authenticate!
-          redirect_to routes.login_path
-        end
 
         class Instance
           attr_reader :id, :name

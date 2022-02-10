@@ -4,8 +4,6 @@ module Web
       class Profile
         include Web::Action
 
-        before :authenticate?
-
         expose :login
         expose :avatar
         expose :teacher
@@ -45,16 +43,6 @@ module Web
           end
           @login = session[:login]
           @avatar = session[:avatar]
-        end
-
-        private
-
-        def authenticate?
-          authenticate! if session[:login].nil?
-        end
-
-        def authenticate!
-          redirect_to routes.login_path
         end
       end
     end

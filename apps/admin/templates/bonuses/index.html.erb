@@ -1,4 +1,20 @@
 <div class="p-6">
+  <div class="TableObject p-4">
+    <%= form_for :bonus, routes.bonuses_path, method: :post do
+      div class: 'TableObject-item p-2' do
+        select :student_id, students, options: { promt: 'Select a student' }, class: 'form-control'
+      end
+      div class: 'TableObject-item p-2' do
+        number_field :worth, {class: 'form-control', placeholder: 'Worth'}
+      end
+      div class: 'TableObject-item p-2' do
+        text_field :why, {class: 'form-control', placeholder: 'Why?'}
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'New', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
   <% bonuses.each do |b| %>
     <div class="TableObject p-4">
       <div class="TableObject-item TableObject-item--primary pr-2">
@@ -26,20 +42,4 @@
       </div>
     </div>
   <% end %>
-  <div class="TableObject p-4">
-    <%= form_for :bonus, routes.bonuses_path, method: :post do
-      div class: 'TableObject-item p-2' do
-        select :student_id, students, options: { promt: 'Select a student' }, class: 'form-control'
-      end
-      div class: 'TableObject-item p-2' do
-        number_field :worth, {class: 'form-control', placeholder: 'Worth'}
-      end
-      div class: 'TableObject-item p-2' do
-        text_field :why, {class: 'form-control', placeholder: 'Why?'}
-      end
-      div class: 'TableObject-item form-actions' do
-        submit 'New', class: 'btn btn-primary'
-      end
-    end %>
-  </div>
 </div>

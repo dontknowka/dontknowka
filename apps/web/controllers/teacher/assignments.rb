@@ -1,10 +1,11 @@
+require_relative './check_role'
+
 module Web
   module Controllers
     module Teacher
       class Assignments
         include Web::Action
-
-        before :authenticate?
+        include CheckRole
 
         expose :login
         expose :avatar
@@ -24,35 +25,16 @@ module Web
         end
 
         def call(params)
-          if session[:role] != 'teacher'
-            redirect_to routes.root_path
-          end
-          teacher = @teachers.find(session[:github_id])
-          if teacher.nil?
-            if @check_membership.call(session[:login]).result
-              redirect_to routes.teacher_profile_path
-            else
-              halt 403, "You need to be a member of TA team"
-            end
-          end
           @login = session[:login]
           @avatar = session[:avatar]
 
-          instances = @teacher_mappings.by_teacher(teacher.id).map {|tm| tm.homework_instance_id}
+          instances = @teacher_mappings.by_teacher(@teacher.id).map {|tm| tm.homework_instance_id}
           @not_approved = @assignments
             .not_approved(instances)
             .map {|a| Assignment.new(a.merge({url: last_pr_url(a[:repo])}))}
         end
 
         private
-
-        def authenticate?
-          authenticate! if session[:github_id].nil?
-        end
-
-        def authenticate!
-          redirect_to routes.login_path
-        end
 
         def last_pr_url(repo)
           pulls = @fetch_pull_requests.call(repo, 'open').pulls

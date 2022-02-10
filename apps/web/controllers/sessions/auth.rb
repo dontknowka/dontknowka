@@ -21,6 +21,11 @@ module Web
             halt 403
           end
         end
+
+        private
+
+        def authenticate?
+        end
       end
     end
   end

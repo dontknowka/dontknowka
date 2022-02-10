@@ -1,4 +1,24 @@
 <div class="p-6">
+  <div class="TableObject p-4">
+    <%= form_for :instance, routes.instances_path, method: :post do
+      div class: 'TableObject-item p-2' do
+        Hanami.logger.debug hw_mapping.to_s
+        select :homework_id, hw_mapping, options: {promt: 'Homework'}, class: 'form-select'
+      end
+      div class: 'TableObject-item p-2' do
+        text_field :name, {class: 'form-control', placeholder: 'Name'}
+      end
+      div class: 'TableObject-item p-2' do
+        number_field :worth, {class: 'form-control', placeholder: 'Worth'}
+      end
+      div class: 'TableObject-item p-2' do
+        text_field :classroom_url, {class: 'form-control', placeholder: 'Classroom URL'}
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'New', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
   <% instances.each do |i| %>
     <div class="TableObject p-4">
       <div class="TableObject-item">
@@ -31,24 +51,4 @@
       </div>
     </div>
   <% end %>
-  <div class="TableObject p-4">
-    <%= form_for :instance, routes.instances_path, method: :post do
-      div class: 'TableObject-item p-2' do
-        Hanami.logger.debug hw_mapping.to_s
-        select :homework_id, hw_mapping, options: {promt: 'Homework'}, class: 'form-select'
-      end
-      div class: 'TableObject-item p-2' do
-        text_field :name, {class: 'form-control', placeholder: 'Name'}
-      end
-      div class: 'TableObject-item p-2' do
-        number_field :worth, {class: 'form-control', placeholder: 'Worth'}
-      end
-      div class: 'TableObject-item p-2' do
-        text_field :classroom_url, {class: 'form-control', placeholder: 'Classroom URL'}
-      end
-      div class: 'TableObject-item form-actions' do
-        submit 'New', class: 'btn btn-primary'
-      end
-    end %>
-  </div>
 </div>

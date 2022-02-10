@@ -1,4 +1,23 @@
 <div class="p-6">
+  <div class="TableObject p-4">
+    <%= form_for :homework, routes.homeworks_path, method: :post do
+      div class: 'TableObject-item p-2' do
+        text_field :kind, {class: 'form-control', placeholder: 'Kind'}
+      end
+      div class: 'TableObject-item p-2' do
+        number_field :number, {class: 'form-control', placeholder: 'Number'}
+      end
+      div class: 'TableObject-item p-2' do
+        datetime_field :prepare_deadline, {class: 'form-control', placeholder: 'Prepare deadline'}
+      end
+      div class: 'TableObject-item p-2' do
+        datetime_field :approve_deadline, {class: 'form-control', placeholder: 'Approve deadline'}
+      end
+      div class: 'TableObject-item form-actions' do
+        submit 'New', class: 'btn btn-primary'
+      end
+    end %>
+  </div>
   <% homeworks.each do |hw| %>
     <div class="TableObject p-4">
       <div class="TableObject-item">
@@ -30,23 +49,4 @@
       </div>
     </div>
   <% end %>
-  <div class="TableObject p-4">
-    <%= form_for :homework, routes.homeworks_path, method: :post do
-      div class: 'TableObject-item p-2' do
-        text_field :kind, {class: 'form-control', placeholder: 'Kind'}
-      end
-      div class: 'TableObject-item p-2' do
-        number_field :number, {class: 'form-control', placeholder: 'Number'}
-      end
-      div class: 'TableObject-item p-2' do
-        datetime_field :prepare_deadline, {class: 'form-control', placeholder: 'Prepare deadline'}
-      end
-      div class: 'TableObject-item p-2' do
-        datetime_field :approve_deadline, {class: 'form-control', placeholder: 'Approve deadline'}
-      end
-      div class: 'TableObject-item form-actions' do
-        submit 'New', class: 'btn btn-primary'
-      end
-    end %>
-  </div>
 </div>

@@ -12,13 +12,12 @@ post '/collect_interviews', to: 'home#collect_interviews', as: :collect_intervie
 
 post '/test', to: 'home#test'
 
-resources :homeworks, except: [:edit]
-resources :instances, except: [:show, :edit]
-resources :sets, except: [:show, :edit]
+resources :homeworks, except: [:edit, :new]
+resources :instances, except: [:show, :edit, :new]
+resources :sets, except: [:show, :edit, :new]
 resources :ta_mappings, except: [:show, :edit]
-resources :teachers, only: [:index, :create, :destroy]
+resources :teachers, only: [:index, :destroy]
 resources :teams, only: [:index, :create, :destroy]
-resources :teacher_mappings, only: [:index, :create, :destroy]
 resources :team_mappings, only: [:index, :create, :destroy]
 resources :bonuses, only: [:index, :create, :update, :destroy]
 resources :competitions, only: [:index, :create, :destroy]
