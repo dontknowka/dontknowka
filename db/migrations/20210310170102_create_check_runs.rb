@@ -6,6 +6,7 @@ Hanami::Model.migration do
 
       column :url, String
       column :completed_at, DateTime, null: false
+      column :pull, Integer
 
       column :created_at, DateTime, null: false
       column :updated_at, DateTime, null: false

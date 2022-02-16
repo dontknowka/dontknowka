@@ -42,10 +42,11 @@ class GetStudentScore
                 when 'failed'
                   'red'
                 end
-      @check_runs = a.check_runs.size
-      @check_malus = @check_runs / 15
+      @check_runs = a.check_runs.group_by(&:pull).values.map(&:size).max
+      @check_malus = @check_runs / 10
+      review_discount = (0.1 * @worth).round
       @reviews = a.reviews.sort_by {|r| r.submitted_at}
-      @review_malus = @reviews.size + @reviews.drop(1).reduce(0) {|acc, r| acc + [r.number_of_criticism - 1, 0].max}
+      @review_malus = [@reviews.size - 1, 0].max * review_discount + @reviews.reduce(0) {|acc, r| acc + r.number_of_criticism}
       @interview_malus = 0
       if a.interview
         @interview_malus = a.interview.malus
