@@ -27,12 +27,12 @@ module Web
                                           email: params[:teacher][:email])
             else
               name_parts = name.split
-              @teacher = Teacher.new(id: id,
-                                     login: session[:login],
-                                     avatar: session[:avatar],
-                                     first_name: name_parts[0],
-                                     last_name: name_parts[1],
-                                     email: email)
+              @teacher = @teachers.create(id: id,
+                                          login: session[:login],
+                                          avatar: session[:avatar],
+                                          first_name: name_parts[0],
+                                          last_name: name_parts[1],
+                                          email: email)
             end
           else
             if params[:teacher]
