@@ -21,9 +21,14 @@ class ProtectBranch
                                                    required_pull_request_reviews: { dismiss_stale_reviews: true,
                                                                                     require_code_owner_reviews: true,
                                                                                     required_approving_review_count: 1 } })
-      @valid = true
+      if @client.branch_protection(repo_name, @branch)
+        @valid = true
+      else
+        @valid = false
+        Hanamo.logger.warn "Branch protection setup silently failed for #{repo_name}" if Hanami.logger
+      end
     rescue Octokit::NotFound
-      Hanami.logger.debug "Not found repository #{repo_name}?"
+      Hanami.logger.warn "Not found repository #{repo_name} while trying to set master branch protection?" if Hanami.logger
       @valid = false
     end
   end

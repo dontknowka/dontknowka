@@ -24,12 +24,13 @@ module Events
 
         def call(params)
           event = @switch.call(request.env['HTTP_X_GITHUB_EVENT'], params).event
-          Hanami.logger.info "Received event #{event.to_s}"
+          repo_name = params[:repository] ? params[:repository][:name] : ''
+          Hanami.logger.info "Received event #{event.to_s} #{repo_name}"
           case event
           when :create_repository
             res = @on_repository_created.call(params)
             if !res.success
-              Hanami.logger.warn "Unsuccessful 'repository created' event processing - #{res.comment}"
+              Hanami.logger.warn "Unsuccessful 'repository created' event processing - #{res.comment} for #{repo_name}"
             else
               Hanami.logger.debug "Successful 'repository created' event processing - #{res.comment}"
             end
