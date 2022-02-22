@@ -24,6 +24,9 @@ module Admin
 
         private
 
+        def authenticate?
+        end
+
         class StudentInfo
           attr_reader :login, :first_name, :last_name, :group, :score
 
