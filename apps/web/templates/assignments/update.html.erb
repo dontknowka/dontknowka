@@ -1,0 +1,12 @@
+<div class="p-4">
+  <div class="blankslate">
+    <% if error %>
+      <p class="f3"><%= error %></p>
+    <% else %>
+      <p class="f3">Unexpected transition</p>
+    <% end %>
+    <p>
+    <a class="btn btn-primary my-3" role="button" href="<%= routes.student_path %>">Back</a>
+    </p>
+  </div>
+</div>

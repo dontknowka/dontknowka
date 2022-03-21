@@ -21,16 +21,21 @@
           <span class="text-green"><%= new_approve %></span>
         </p>
       <% end %>
-      <p>
-      <%= form_for :assignment, routes.assignment_path(id: assignment[:id]), method: :patch do
-        hidden_field :id
-        hidden_field :days
-        submit 'OK', class: 'btn btn-primary my-3'
-        a class: 'btn', role: 'button', href: routes.student_path do
-          "Cancel"
-        end
-      end %>
-      </p>
+      <% if !(new_prepare.nil? && new_approve.nil?) %>
+        <p>
+        <%= form_for :assignment, routes.assignment_path(id: assignment[:id]), method: :patch do
+          hidden_field :id
+          hidden_field :days
+          hidden_field :new_late_days, value: new_late_days
+          hidden_field :update_prepare, value: (new_prepare.nil? ? '0' : '1')
+          hidden_field :update_approve, value: (new_approve.nil? ? '0' : '1')
+          submit 'OK', class: 'btn btn-primary my-3'
+          a class: 'btn', role: 'button', href: routes.student_path do
+            "Cancel"
+          end
+        end %>
+        </p>
+      <% end %>
     <% end %>
   </div>
 </div>

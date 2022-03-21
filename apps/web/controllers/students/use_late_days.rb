@@ -16,6 +16,7 @@ module Web
         expose :new_prepare
         expose :old_approve
         expose :new_approve
+        expose :new_late_days
 
         def initialize(students: StudentRepository.new,
                        get_student_score: GetStudentScore.new)
@@ -43,6 +44,7 @@ module Web
           elsif days < 1 || days > student.late_days
             @error = "Days value must be between 1 and #{student.late_days}"
           else
+            @new_late_days = student.late_days - days
             now = Time.now
             @old_prepare = Time.parse(@assignment[:prepare_deadline])
             @old_approve = Time.parse(@assignment[:approve_deadline])
@@ -51,6 +53,9 @@ module Web
             end
             if @old_approve > now
               @new_approve = @old_approve + 86400 * days
+            end
+            if @new_prepare.nil? && @new_approve.nil?
+              @error = "Not applicable to this assignment: both deadlines have passed"
             end
           end
         end
