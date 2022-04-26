@@ -2,6 +2,7 @@ root to: 'home#index'
 get '/login', to: 'home#login', as: :login
 post '/login', to: 'home#auth', as: :auth
 
+get '/create_variants', to: 'home#create_variants', as: :create_variants
 get '/fix_ass', to: 'home#fix_ass', as: :fix_ass
 get '/fix_reviews', to: 'home#fix_reviews', as: :fix_reviews
 get '/download_scores', to: 'home#download_scores', as: :download_scores

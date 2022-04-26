@@ -107,4 +107,11 @@ class AssignmentRepository < Hanami::Repository
         .to_a
     end
   end
+
+  def group_by_student
+    assignments.read("SELECT student_id, homework_instance_id, login FROM assignments INNER JOIN students ON (assignments.student_id = students.id) ORDER BY student_id, homework_instance_id")
+      .map
+      .to_a
+      .group_by {|a| a[:student_id]}
+  end
 end
