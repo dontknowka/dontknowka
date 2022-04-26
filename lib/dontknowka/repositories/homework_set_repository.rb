@@ -26,7 +26,7 @@ class HomeworkSetRepository < Hanami::Repository
       .to_a
       .group_by {|x| "#{x[:name]}.#{x[:variant_id]}"}
       .values
-      .map_to(SameVariantInstances)
+      .map {|x| SameVariantInstances.new(x)}
   end
 
   private
